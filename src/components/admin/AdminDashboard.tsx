@@ -42,6 +42,7 @@ export const AdminDashboard: React.FC = () => {
     registerAttendanceViaQR,
     latestScanAlert,
     clearLatestScanAlert
+    ,config 
   } = useApp();
 
   const [quickQrInput, setQuickQrInput] = useState('');
@@ -254,7 +255,7 @@ export const AdminDashboard: React.FC = () => {
             <CheckCircle2 className="w-4 h-4 text-emerald-400" />
           </div>
           <p className="text-2xl sm:text-3xl font-extrabold text-emerald-400">{presentesHoy}</p>
-          <p className="text-[11px] text-emerald-500/80 mt-1 font-medium">A tiempo antes de 08:00</p>
+          <p className="text-[11px] text-emerald-500/80 mt-1 font-medium">A tiempo hasta las {config.horaIngresoNormal}</p>
         </div>
 
         {/* Tardanzas */}
@@ -264,7 +265,7 @@ export const AdminDashboard: React.FC = () => {
             <Clock className="w-4 h-4 text-amber-400" />
           </div>
           <p className="text-2xl sm:text-3xl font-extrabold text-amber-400">{tardanzasHoy}</p>
-          <p className="text-[11px] text-amber-500/80 mt-1 font-medium">Ingreso 08:01 - 08:15</p>
+          <p className="text-[11px] text-amber-500/80 mt-1 font-medium">Ingreso después de {config.horaIngresoNormal} hasta {config.horaLimiteTardanza}</p>
         </div>
 
         {/* Inasistencias */}
