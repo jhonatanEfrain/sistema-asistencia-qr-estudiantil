@@ -1,0 +1,154 @@
+@import "tailwindcss";
+
+/* LIGHT THEME STYLES & ACCESSIBLE HOVER CONTRAST */
+.theme-light {
+  color-scheme: light;
+  background-color: #f8fafc !important;
+  color: #0f172a !important;
+}
+
+/* Background overrides */
+.theme-light .bg-slate-950 {
+  background-color: #f8fafc !important;
+}
+
+.theme-light .bg-slate-900 {
+  background-color: #ffffff !important;
+}
+
+.theme-light .bg-slate-800 {
+  background-color: #f1f5f9 !important;
+}
+
+.theme-light .bg-slate-800\/80,
+.theme-light .bg-slate-800\/60,
+.theme-light .bg-slate-800\/40,
+.theme-light .bg-slate-800\/20 {
+  background-color: #f1f5f9 !important;
+}
+
+.theme-light .bg-slate-950\/80,
+.theme-light .bg-slate-950\/60,
+.theme-light .bg-slate-950\/40 {
+  background-color: #e2e8f0 !important;
+}
+
+/* Border overrides */
+.theme-light .border-slate-800,
+.theme-light .border-slate-800\/80,
+.theme-light .border-slate-800\/60 {
+  border-color: #e2e8f0 !important;
+}
+
+.theme-light .border-slate-700,
+.theme-light .border-slate-700\/80 {
+  border-color: #cbd5e1 !important;
+}
+
+/* Text overrides for generic dark cards & labels */
+.theme-light .text-slate-100,
+.theme-light .text-slate-200,
+.theme-light .text-slate-300 {
+  color: #1e293b !important;
+}
+
+.theme-light .text-slate-400,
+.theme-light .text-slate-500 {
+  color: #64748b !important;
+}
+
+.theme-light .text-white {
+  color: #0f172a !important;
+}
+
+/* CRITICAL: Keep crisp white text on solid colored buttons & badges */
+.theme-light .bg-blue-600,
+.theme-light .bg-blue-500,
+.theme-light .bg-emerald-600,
+.theme-light .bg-emerald-500,
+.theme-light .bg-red-600,
+.theme-light .bg-indigo-600,
+.theme-light .bg-amber-600,
+.theme-light .bg-purple-600,
+.theme-light .bg-rose-600,
+.theme-light .bg-gradient-to-r,
+.theme-light .bg-gradient-to-tr {
+  color: #ffffff !important;
+}
+
+.theme-light .bg-blue-600 *,
+.theme-light .bg-blue-500 *,
+.theme-light .bg-emerald-600 *,
+.theme-light .bg-emerald-500 *,
+.theme-light .bg-red-600 *,
+.theme-light .bg-indigo-600 *,
+.theme-light .bg-amber-600 *,
+.theme-light .bg-purple-600 *,
+.theme-light .bg-rose-600 *,
+.theme-light .bg-gradient-to-r *,
+.theme-light .bg-gradient-to-tr * {
+  color: #ffffff !important;
+}
+
+/* HOVER STATES IN LIGHT MODE - ENSURE HIGH CONTRAST DARK TEXT ON HOVER */
+.theme-light .hover\:bg-slate-800:hover,
+.theme-light .hover\:bg-slate-800\/60:hover,
+.theme-light .hover\:bg-slate-800\/80:hover {
+  background-color: #e2e8f0 !important;
+  color: #0f172a !important;
+}
+
+.theme-light .hover\:bg-slate-700:hover,
+.theme-light .hover\:bg-slate-700\/80:hover {
+  background-color: #cbd5e1 !important;
+  color: #0f172a !important;
+}
+
+.theme-light .hover\:bg-slate-900:hover {
+  background-color: #f1f5f9 !important;
+  color: #0f172a !important;
+}
+
+.theme-light .hover\:text-white:hover,
+.theme-light .hover\:text-slate-100:hover,
+.theme-light .hover\:text-slate-200:hover,
+.theme-light .hover\:text-slate-300:hover {
+  color: #0f172a !important;
+}
+
+.theme-light .hover\:bg-slate-800:hover svg,
+.theme-light .hover\:bg-slate-700:hover svg,
+.theme-light .hover\:bg-slate-900:hover svg {
+  color: #0f172a !important;
+}
+
+/* Table row hovers */
+.theme-light tr:hover {
+  background-color: #f1f5f9 !important;
+}
+
+.theme-light tr:hover td {
+  color: #0f172a !important;
+}
+
+/* Header & Sidebar container background */
+.theme-light header,
+.theme-light aside {
+  background-color: #ffffff !important;
+  border-color: #e2e8f0 !important;
+}
+
+/* Form inputs & dropdowns */
+.theme-light input,
+.theme-light select,
+.theme-light textarea {
+  background-color: #f8fafc !important;
+  color: #0f172a !important;
+  border-color: #cbd5e1 !important;
+}
+
+.theme-light input::placeholder,
+.theme-light textarea::placeholder {
+  color: #94a3b8 !important;
+}
+

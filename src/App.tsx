@@ -1,0 +1,120 @@
+import React, { useState } from 'react';
+import { AppProvider, useApp } from './context/AppContext';
+import { Navbar } from './components/Navbar';
+import { Sidebar } from './components/Sidebar';
+import { QRScannerModal } from './components/scanner/QRScannerModal';
+import { LoginView } from './components/LoginView';
+
+// Views
+import { AdminDashboard } from './components/admin/AdminDashboard';
+import { StudentManager } from './components/admin/StudentManager';
+import { TeacherManager } from './components/admin/TeacherManager';
+import { ParentManager } from './components/admin/ParentManager';
+import { ClassroomManager } from './components/admin/ClassroomManager';
+import { UserSecurityManager } from './components/admin/UserSecurityManager';
+
+import { TeacherPortal } from './components/teacher/TeacherPortal';
+import { ParentPortal } from './components/parent/ParentPortal';
+import { ReportsView } from './components/reports/ReportsView';
+import { SystemDocsView } from './components/docs/SystemDocsView';
+
+const MainAppContent: React.FC = () => {
+  const {
+    isAuthenticated,
+    activeTab,
+    setActiveTab,
+    isScannerModalOpen,
+    setIsScannerModalOpen,
+    currentRole,
+    theme
+  } = useApp();
+
+  const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(true);
+
+  if (!isAuthenticated) {
+    return <LoginView />;
+  }
+
+  const handleCloseScanner = () => {
+    setIsScannerModalOpen(false);
+    if (activeTab === 'escaner') {
+      const fallbackTab = currentRole === 'docente' ? 'docente_aulas' : currentRole === 'padre' ? 'padre_hijo' : 'dashboard';
+      setActiveTab(fallbackTab);
+    }
+  };
+
+  // Render view depending on activeTab
+  const renderActiveView = () => {
+    switch (activeTab) {
+      case 'dashboard':
+        return <AdminDashboard />;
+      case 'estudiantes':
+        return <StudentManager />;
+      case 'docentes':
+        return <TeacherManager />;
+      case 'padres':
+        return <ParentManager />;
+      case 'aulas':
+        return <ClassroomManager />;
+      case 'seguridad':
+        return <UserSecurityManager />;
+
+      case 'docente_aulas':
+        return <TeacherPortal />;
+      case 'padre_hijo':
+        return <ParentPortal />;
+
+      case 'reportes':
+        return <ReportsView />;
+      case 'documentacion':
+        return <SystemDocsView />;
+
+      case 'comunicados':
+        return currentRole === 'padre' ? <ParentPortal /> : <TeacherPortal />;
+
+      case 'escaner':
+        return <AdminDashboard />;
+
+      default:
+        return <AdminDashboard />;
+    }
+  };
+
+  return (
+    <div className={`min-h-screen flex flex-col font-sans selection:bg-blue-600 selection:text-white transition-colors duration-200 ${
+      theme === 'light' ? 'theme-light bg-slate-100 text-slate-900' : 'bg-slate-950 text-slate-100'
+    }`}>
+      {/* Navbar */}
+      <Navbar
+        isOpen={isSidebarOpen}
+        isSidebarOpen={isSidebarOpen}
+        onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
+      />
+
+      {/* Main Container */}
+      <div className="flex-1 flex overflow-hidden">
+        {/* Sidebar */}
+        <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
+
+        {/* Content Area */}
+        <main className="flex-1 overflow-y-auto p-3.5 sm:p-6 md:p-8 space-y-6">
+          {renderActiveView()}
+        </main>
+      </div>
+
+      {/* Global QR Scanner Modal */}
+      <QRScannerModal
+        isOpen={isScannerModalOpen || activeTab === 'escaner'}
+        onClose={handleCloseScanner}
+      />
+    </div>
+  );
+};
+
+export default function App() {
+  return (
+    <AppProvider>
+      <MainAppContent />
+    </AppProvider>
+  );
+}
