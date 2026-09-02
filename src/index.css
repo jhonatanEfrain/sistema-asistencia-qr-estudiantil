@@ -19,13 +19,183 @@ body {
 
 .login-shell {
   background:
-    radial-gradient(circle at 18% 18%, rgba(147, 170, 255, 0.42), transparent 26rem),
-    radial-gradient(circle at 82% 78%, rgba(23, 43, 111, 0.38), transparent 30rem),
-    linear-gradient(145deg, #4c67b5 0%, #344e9c 56%, #2b4387 100%);
+    radial-gradient(circle at 12% 16%, rgba(172, 193, 255, 0.34), transparent 28rem),
+    radial-gradient(circle at 88% 86%, rgba(18, 46, 122, 0.45), transparent 32rem),
+    linear-gradient(145deg, #5873c1 0%, #3f5baa 52%, #2c4388 100%);
 }
 
-.login-card {
-  box-shadow: 0 35px 90px rgba(14, 29, 77, 0.32);
+.login-panel {
+  max-width: 1080px;
+  min-height: min(680px, calc(100vh - 5rem));
+  display: grid;
+  grid-template-columns: minmax(0, 0.92fr) minmax(440px, 1.08fr);
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  border-radius: 2.25rem;
+  box-shadow: 0 34px 90px rgba(14, 29, 77, 0.32);
+}
+
+.login-welcome-panel {
+  min-height: 100%;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.08), transparent 48%),
+    linear-gradient(160deg, #4265c5 0%, #2852ae 56%, #173b86 100%);
+}
+
+.login-welcome-cut {
+  position: absolute;
+  z-index: 1;
+  top: -8%;
+  right: -8.8rem;
+  width: 11rem;
+  height: 116%;
+  border-radius: 50%;
+  background: #fff;
+}
+
+.login-orb {
+  position: absolute;
+  border-radius: 50%;
+  background: linear-gradient(145deg, rgba(132, 164, 255, 0.75), rgba(22, 67, 163, 0.88));
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.28), 0 24px 45px rgba(12, 35, 100, 0.2);
+}
+
+.login-orb-one {
+  right: 0.5rem;
+  bottom: 2.5rem;
+  width: 8rem;
+  height: 8rem;
+}
+
+.login-orb-two {
+  left: -3rem;
+  bottom: -3.5rem;
+  width: 10rem;
+  height: 10rem;
+  opacity: 0.7;
+}
+
+.login-dot-grid {
+  position: absolute;
+  inset: 0;
+  opacity: 0.12;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.8) 1px, transparent 1px);
+  background-size: 18px 18px;
+  mask-image: linear-gradient(to bottom right, #000, transparent 72%);
+}
+
+.login-feature {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.75rem 0.85rem;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 0.7rem;
+  font-weight: 700;
+  line-height: 1.2;
+  backdrop-filter: blur(10px);
+}
+
+.login-form-panel {
+  position: relative;
+  z-index: 2;
+}
+
+.login-db-status {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 0.65rem;
+  border-radius: 999px;
+  font-size: 0.65rem;
+  font-weight: 800;
+}
+
+.login-db-status.is-online {
+  border: 1px solid #a7f3d0;
+  background: #ecfdf5;
+  color: #059669;
+}
+
+.login-db-status.is-local {
+  border: 1px solid #fde68a;
+  background: #fffbeb;
+  color: #d97706;
+}
+
+.login-input {
+  border: 1px solid #dbe3f1;
+  background: #f8fafc;
+  color: #0f172a;
+  outline: none;
+  transition: border-color 160ms ease, box-shadow 160ms ease, background 160ms ease;
+}
+
+.login-input::placeholder {
+  color: #94a3b8;
+}
+
+.login-input:focus {
+  border-color: #4f6fd0;
+  background: #fff;
+  box-shadow: 0 0 0 4px rgba(79, 111, 208, 0.12);
+}
+
+.login-submit {
+  background: linear-gradient(135deg, #496bd0 0%, #2b55bb 100%);
+  box-shadow: 0 14px 28px rgba(43, 85, 187, 0.24);
+}
+
+.login-submit:hover:not(:disabled) {
+  transform: translateY(-1px);
+  background: linear-gradient(135deg, #3e60c4 0%, #2149a7 100%);
+  box-shadow: 0 17px 34px rgba(43, 85, 187, 0.3);
+}
+
+@media (max-width: 860px) {
+  .login-panel {
+    max-width: 620px;
+    min-height: auto;
+    grid-template-columns: minmax(0, 1fr);
+    border-radius: 1.75rem;
+  }
+
+  .login-welcome-panel {
+    min-height: 300px;
+  }
+
+  .login-welcome-cut {
+    display: none;
+  }
+
+  .login-orb-one {
+    right: -1.5rem;
+    bottom: -2.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .login-shell {
+    align-items: flex-start;
+    padding: 0;
+  }
+
+  .login-panel {
+    min-height: 100vh;
+    border: 0;
+    border-radius: 0;
+  }
+
+  .login-welcome-panel {
+    min-height: 265px;
+  }
+
+  .login-feature {
+    padding: 0.65rem 0.7rem;
+  }
 }
 
 button,
