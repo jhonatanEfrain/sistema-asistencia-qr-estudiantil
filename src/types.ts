@@ -4,6 +4,10 @@ export type Nivel = 'Primaria' | 'Secundaria';
 
 export type EstadoAsistencia = 'Presente' | 'Tardanza' | 'Inasistencia' | 'Justificado';
 
+export type AlcanceComunicado = 'colegio' | 'aula';
+
+export type TipoNotificacion = 'asistencia' | 'comunicado' | 'mensaje';
+
 export interface User {
   id: string;
   name: string;
@@ -96,7 +100,10 @@ export interface Comunicado {
   descripcion: string;
   fecha: string; // YYYY-MM-DD HH:MM
   autor: string;
+  autorId: string;
   autorRol: string;
+  alcance: AlcanceComunicado;
+  aulaId?: string;
   aulaDestino: string; // Ej. "1.° Primaria", "2.° Secundaria", "Todas"
   nivelDestino?: Nivel | 'Todos';
 }
@@ -105,11 +112,26 @@ export interface Notificacion {
   id: string;
   estudianteId: string;
   padreId?: string;
+  usuarioDestinoId?: string;
+  comunicadoId?: string;
   titulo: string;
   mensaje: string;
   fechaHora: string;
   leida: boolean;
-  canal: 'App' | 'WhatsApp' | 'SMS' | 'Email';
+  tipo: TipoNotificacion;
+  canal: 'App';
+}
+
+export interface MensajeChat {
+  id: string;
+  docenteUsuarioId: string;
+  padreUsuarioId: string;
+  estudianteId: string;
+  remitenteId: string;
+  remitenteRol: 'docente' | 'padre';
+  contenido: string;
+  fechaHora: string;
+  leido: boolean;
 }
 
 export interface HistorialAcceso {

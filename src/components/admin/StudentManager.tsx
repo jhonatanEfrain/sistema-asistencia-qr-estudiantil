@@ -480,7 +480,7 @@ export const StudentManager: React.FC = () => {
                     />
                   </div>
                   <div>
-                    <label className="block text-slate-400 font-semibold mb-1">Teléfono (WhatsApp)</label>
+                    <label className="block text-slate-400 font-semibold mb-1">Teléfono del apoderado</label>
                     <input
                       type="text"
                       required

@@ -58,7 +58,10 @@ export const TeacherPortal: React.FC = () => {
       titulo: comTitulo,
       descripcion: comDescripcion,
       autor: currentUser.name,
-      autorRol: 'Docente Tutor',
+      autorId: currentUser.id,
+      autorRol: 'Docente',
+      alcance: 'aula',
+      aulaId: selectedAula.id,
       aulaDestino: comTargetGrade,
       nivelDestino: selectedAula.nivel
     });
@@ -92,7 +95,7 @@ export const TeacherPortal: React.FC = () => {
         <div className="flex items-center gap-2">
           {!isComunicadoView ? (
             <button
-              onClick={() => setIsComunicadoModalOpen(true)}
+              onClick={() => setActiveTab('comunicados')}
               className="flex items-center gap-2 px-4 py-2 rounded-xl bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs shadow-md transition-all"
             >
               <Megaphone className="w-4 h-4" />

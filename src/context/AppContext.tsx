@@ -10,6 +10,7 @@ import {
   Asistencia,
   Comunicado,
   Notificacion,
+  MensajeChat,
   HistorialAcceso,
   ConfiguracionHorario,
   EstadoAsistencia
@@ -24,6 +25,7 @@ import {
   initialAsistencias,
   initialComunicados,
   initialNotificaciones,
+  initialMensajesChat,
   initialHistorialAccesos
 } from '../data/initialData';
 
@@ -61,6 +63,8 @@ interface AppContextType {
   asistencias: Asistencia[];
   comunicados: Comunicado[];
   notificaciones: Notificacion[];
+  notificacionesVisibles: Notificacion[];
+  mensajesChat: MensajeChat[];
   historialAccesos: HistorialAcceso[];
 
   // User Accounts Actions
@@ -82,8 +86,10 @@ interface AppContextType {
   registerAttendanceViaQR: (qrData: string) => { success: boolean; message: string; asistencia?: Asistencia };
   addManualAsistencia: (asistencia: Omit<Asistencia, 'id'>) => void;
 
-  addComunicado: (comunicado: Omit<Comunicado, 'id' | 'fecha'>) => void;
+  addComunicado: (comunicado: Omit<Comunicado, 'id' | 'fecha'>) => Promise<{ success: boolean; error?: string }>;
   markNotificationAsRead: (id: string) => void;
+  sendChatMessage: (mensaje: Omit<MensajeChat, 'id' | 'fechaHora' | 'leido'>) => Promise<{ success: boolean; error?: string }>;
+  markChatMessagesAsRead: (docenteUsuarioId: string, padreUsuarioId: string, estudianteId: string) => void;
 
   // Theme & UI helpers
   theme: 'dark' | 'light';
@@ -195,6 +201,14 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     return initialNotificaciones;
   });
 
+  const [mensajesChat, setMensajesChat] = useState<MensajeChat[]>(() => {
+    try {
+      const saved = localStorage.getItem('asistencia_mensajes_chat');
+      if (saved) return JSON.parse(saved);
+    } catch (e) {}
+    return initialMensajesChat;
+  });
+
   const [historialAccesos, setHistorialAccesos] = useState<HistorialAcceso[]>(initialHistorialAccesos);
 
   // Guardar automáticamente cambios en localStorage
@@ -229,6 +243,10 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   useEffect(() => {
     try { localStorage.setItem('asistencia_notificaciones', JSON.stringify(notificaciones)); } catch (e) {}
   }, [notificaciones]);
+
+  useEffect(() => {
+    try { localStorage.setItem('asistencia_mensajes_chat', JSON.stringify(mensajesChat)); } catch (e) {}
+  }, [mensajesChat]);
 
   const [theme, setTheme] = useState<'dark' | 'light'>(() => {
     return (localStorage.getItem('asistencia_theme') as 'dark' | 'light') || 'light';
@@ -289,16 +307,22 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   };
 
   // Cargar todos los datos desde MySQL
-  const fetchBackendData = async () => {
+  const fetchBackendData = async (viewer: User = currentUser) => {
     try {
-      const [estRes, asisRes, docRes, padRes, aulRes, comRes, notRes, cfgRes, usrRes] = await Promise.all([
+      const viewerParams = new URLSearchParams({
+        usuarioId: viewer.id,
+        rol: viewer.role,
+        estudianteId: viewer.estudianteId || ''
+      });
+      const [estRes, asisRes, docRes, padRes, aulRes, comRes, notRes, msgRes, cfgRes, usrRes] = await Promise.all([
         fetch('/api/estudiantes').then(r => r.json()).catch(() => null),
         fetch('/api/asistencias').then(r => r.json()).catch(() => null),
         fetch('/api/docentes').then(r => r.json()).catch(() => null),
         fetch('/api/padres').then(r => r.json()).catch(() => null),
         fetch('/api/aulas').then(r => r.json()).catch(() => null),
         fetch('/api/comunicados').then(r => r.json()).catch(() => null),
-        fetch('/api/notificaciones').then(r => r.json()).catch(() => null),
+        fetch(`/api/notificaciones?${viewerParams.toString()}`).then(r => r.json()).catch(() => null),
+        fetch(`/api/mensajes-chat?${viewerParams.toString()}`).then(r => r.json()).catch(() => null),
         fetch('/api/config').then(r => r.json()).catch(() => null),
         fetch('/api/usuarios').then(r => r.json()).catch(() => null),
       ]);
@@ -308,8 +332,9 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       if (docRes?.connected && Array.isArray(docRes.data) && docRes.data.length > 0) setDocentes(docRes.data);
       if (padRes?.connected && Array.isArray(padRes.data) && padRes.data.length > 0) setPadres(padRes.data);
       if (aulRes?.connected && Array.isArray(aulRes.data) && aulRes.data.length > 0) setAulas(aulRes.data);
-      if (comRes?.connected && Array.isArray(comRes.data) && comRes.data.length > 0) setComunicados(comRes.data);
-      if (notRes?.connected && Array.isArray(notRes.data) && notRes.data.length > 0) setNotificaciones(notRes.data);
+      if (comRes?.connected && Array.isArray(comRes.data)) setComunicados(comRes.data);
+      if (notRes?.connected && Array.isArray(notRes.data)) setNotificaciones(notRes.data);
+      if (msgRes?.connected && Array.isArray(msgRes.data)) setMensajesChat(msgRes.data);
       if (cfgRes?.connected && cfgRes.data) setConfig(cfgRes.data);
       if (usrRes?.connected && Array.isArray(usrRes.data) && usrRes.data.length > 0) setUsuarios(usrRes.data);
     } catch (err) {
@@ -340,6 +365,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
         localStorage.setItem('asistencia_auth', 'true');
         localStorage.setItem('asistencia_user', JSON.stringify(data.user));
         setActiveTab(data.user.role === 'admin' ? 'dashboard' : data.user.role === 'docente' ? 'docente_aulas' : 'padre_hijo');
+        fetchBackendData(data.user);
         return { success: true };
       }
     } catch (e) {
@@ -741,15 +767,20 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       }).catch(console.error);
     }
 
-    // Generar Notificación para Apoderado
+    // Generar notificación interna dirigida únicamente al apoderado vinculado
+    const parentAccount = usuarios.find(u => u.rol === 'padre' && u.estudianteId === est.id);
+    const parentRecord = padres.find(p => p.estudianteId === est.id);
     const notif: Notificacion = {
       id: `NOT-${Date.now()}`,
       estudianteId: est.id,
+      padreId: parentRecord?.id,
+      usuarioDestinoId: parentAccount?.id,
       titulo: `Asistencia Registrada (${estado})`,
       mensaje: `Su hijo(a) ${est.nombres} ${est.apellidos} ingresó a la institución a las ${currentTimeStr} hrs [${estado}].`,
       fechaHora: `${todayStr} ${currentTimeStr}`,
       leida: false,
-      canal: 'WhatsApp'
+      tipo: 'asistencia',
+      canal: 'App'
     };
 
     setNotificaciones(prev => [notif, ...prev]);
@@ -828,8 +859,15 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     }
   };
 
-  // Comunicados
-  const addComunicado = (data: Omit<Comunicado, 'id' | 'fecha'>) => {
+  // Comunicados internos con destinatarios explícitos por colegio o aula
+  const addComunicado = async (data: Omit<Comunicado, 'id' | 'fecha'>) => {
+    if (currentRole === 'admin' && data.alcance !== 'colegio') {
+      return { success: false, error: 'El administrador publica comunicados generales para todo el colegio.' };
+    }
+    if (currentRole === 'docente' && (!data.aulaId || !currentUser.assignedAulas?.includes(data.aulaId))) {
+      return { success: false, error: 'Solo puedes publicar en las aulas que tienes asignadas.' };
+    }
+
     const dateStr = new Date().toISOString().slice(0, 10) + ' ' + new Date().toTimeString().slice(0, 5);
     const newCom: Comunicado = {
       ...data,
@@ -837,13 +875,50 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       fecha: dateStr
     };
     setComunicados(prev => [newCom, ...prev]);
+
     if (isDbConnected) {
-      fetch('/api/comunicados', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(newCom)
-      }).catch(console.error);
+      try {
+        const response = await fetch('/api/comunicados', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(newCom)
+        });
+        const result = await response.json();
+        if (!response.ok) {
+          setComunicados(prev => prev.filter(item => item.id !== newCom.id));
+          return { success: false, error: result.error || 'No se pudo publicar el comunicado.' };
+        }
+        if (Array.isArray(result.notifications)) {
+          setNotificaciones(prev => [...result.notifications, ...prev]);
+        }
+      } catch (error) {
+        return { success: false, error: 'No se pudo conectar con el servidor.' };
+      }
+    } else {
+      const recipients = estudiantes.filter(estudiante =>
+        data.alcance === 'colegio' || estudiante.aulaId === data.aulaId
+      );
+      const localNotifications: Notificacion[] = recipients.flatMap((estudiante, index) => {
+        const account = usuarios.find(u => u.rol === 'padre' && u.estudianteId === estudiante.id);
+        const parent = padres.find(p => p.estudianteId === estudiante.id);
+        if (!account) return [];
+        return [{
+          id: `NOT-COM-${Date.now()}-${index}`,
+          estudianteId: estudiante.id,
+          padreId: parent?.id,
+          usuarioDestinoId: account.id,
+          comunicadoId: newCom.id,
+          titulo: newCom.titulo,
+          mensaje: newCom.descripcion,
+          fechaHora: `${dateStr}:00`,
+          leida: false,
+          tipo: 'comunicado',
+          canal: 'App',
+        }];
+      });
+      setNotificaciones(prev => [...localNotifications, ...prev]);
     }
+    return { success: true };
   };
 
   const markNotificationAsRead = (id: string) => {
@@ -852,6 +927,66 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       fetch(`/api/notificaciones/${id}/read`, { method: 'PUT' }).catch(console.error);
     }
   };
+
+  const sendChatMessage = async (data: Omit<MensajeChat, 'id' | 'fechaHora' | 'leido'>) => {
+    if (!data.contenido.trim()) return { success: false, error: 'Escribe un mensaje.' };
+
+    const now = new Date();
+    const newMessage: MensajeChat = {
+      ...data,
+      contenido: data.contenido.trim(),
+      id: `MSG-${Date.now()}`,
+      fechaHora: `${getLocalDateStr(now)} ${now.toTimeString().slice(0, 8)}`,
+      leido: false,
+    };
+
+    setMensajesChat(prev => [...prev, newMessage]);
+    if (isDbConnected) {
+      try {
+        const response = await fetch('/api/mensajes-chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(newMessage),
+        });
+        const result = await response.json();
+        if (!response.ok) {
+          setMensajesChat(prev => prev.filter(item => item.id !== newMessage.id));
+          return { success: false, error: result.error || 'No se pudo enviar el mensaje.' };
+        }
+        if (result.notification) {
+          setNotificaciones(prev => [result.notification, ...prev]);
+        }
+      } catch (error) {
+        setMensajesChat(prev => prev.filter(item => item.id !== newMessage.id));
+        return { success: false, error: 'No se pudo conectar con el servidor.' };
+      }
+    }
+    return { success: true };
+  };
+
+  const markChatMessagesAsRead = (docenteUsuarioId: string, padreUsuarioId: string, estudianteId: string) => {
+    setMensajesChat(prev => prev.map(message =>
+      message.docenteUsuarioId === docenteUsuarioId &&
+      message.padreUsuarioId === padreUsuarioId &&
+      message.estudianteId === estudianteId &&
+      message.remitenteId !== currentUser.id
+        ? { ...message, leido: true }
+        : message
+    ));
+    if (isDbConnected) {
+      fetch('/api/mensajes-chat/read', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ docenteUsuarioId, padreUsuarioId, estudianteId, lectorId: currentUser.id }),
+      }).catch(console.error);
+    }
+  };
+
+  const notificacionesVisibles = notificaciones.filter(notification => {
+    if (notification.usuarioDestinoId) return notification.usuarioDestinoId === currentUser.id;
+    if (currentRole === 'padre') return notification.estudianteId === currentUser.estudianteId;
+    return false;
+  });
 
   return (
     <AppContext.Provider
@@ -877,6 +1012,8 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
         asistencias,
         comunicados,
         notificaciones,
+        notificacionesVisibles,
+        mensajesChat,
         historialAccesos,
         addUsuario,
         updateUsuario,
@@ -893,6 +1030,8 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
         addManualAsistencia,
         addComunicado,
         markNotificationAsRead,
+        sendChatMessage,
+        markChatMessagesAsRead,
         theme,
         toggleTheme,
         soundEnabled,

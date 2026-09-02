@@ -11,7 +11,7 @@ USE \`asistencia_qr_db\`;
 -- 1. TABLA: roles
 -- ------------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS \`roles\` (
-  \`id\` INT AUTO_INCREMENT PRIMARY KEY,
+  \`id\` VARCHAR(50) PRIMARY KEY,
   \`nombre\` VARCHAR(50) NOT NULL UNIQUE,
   \`descripcion\` VARCHAR(255) NULL,
   \`fecha_creacion\` DATETIME DEFAULT CURRENT_TIMESTAMP
@@ -144,25 +144,30 @@ CREATE TABLE IF NOT EXISTS \`comunicados\` (
   \`id\` INT AUTO_INCREMENT PRIMARY KEY,
   \`titulo\` VARCHAR(150) NOT NULL,
   \`descripcion\` TEXT NOT NULL,
-  \`fecha_publicacion\` DATETIME DEFAULT CURRENT_TIMESTAMP,
-  \`autor_nombre\` VARCHAR(100) NOT NULL,
+  \`fecha\` DATETIME DEFAULT CURRENT_TIMESTAMP,
+  \`autor\` VARCHAR(100) NOT NULL,
+  \`autor_id\` VARCHAR(50) NOT NULL,
   \`autor_rol\` VARCHAR(50) NOT NULL,
-  \`aula_destino_id\` VARCHAR(20) NULL, -- Null si es para todo un nivel o colegio
+  \`alcance\` ENUM('colegio', 'aula') NOT NULL,
+  \`aula_id\` VARCHAR(50) NULL,
+  \`aula_destino\` VARCHAR(100) NOT NULL,
   \`nivel_destino\` ENUM('Primaria', 'Secundaria', 'Todos') DEFAULT 'Todos',
-  FOREIGN KEY (\`aula_destino_id\`) REFERENCES \`aulas\`(\`id\`) ON DELETE CASCADE
+  FOREIGN KEY (\`aula_id\`) REFERENCES \`aulas\`(\`id\`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ------------------------------------------------------------------------------
 -- 11. TABLA: notificaciones
 -- ------------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS \`notificaciones\` (
-  \`id\` BIGINT AUTO_INCREMENT PRIMARY KEY,
+  \`id\` VARCHAR(50) PRIMARY KEY,
   \`estudiante_id\` VARCHAR(20) NOT NULL,
   \`padre_id\` VARCHAR(20) NULL,
+  \`usuario_destino_id\` VARCHAR(50) NULL,
+  \`comunicado_id\` VARCHAR(50) NULL,
   \`titulo\` VARCHAR(100) NOT NULL,
   \`mensaje\` TEXT NOT NULL,
-  \`canal\` ENUM('App', 'WhatsApp', 'SMS', 'Email') DEFAULT 'App',
-  \`estado_envio\` ENUM('Pendiente', 'Enviado', 'Fallido') DEFAULT 'Enviado',
+  \`canal\` ENUM('App') DEFAULT 'App',
+  \`tipo\` ENUM('asistencia', 'comunicado', 'mensaje') NOT NULL DEFAULT 'asistencia',
   \`leida\` TINYINT(1) DEFAULT 0,
   \`fecha_hora\` DATETIME DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (\`estudiante_id\`) REFERENCES \`estudiantes\`(\`id\`) ON DELETE CASCADE,
@@ -170,7 +175,22 @@ CREATE TABLE IF NOT EXISTS \`notificaciones\` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ------------------------------------------------------------------------------
--- 12. TABLA: historial_accesos (Auditoría)
+-- 12. TABLA: mensajes_chat
+-- ------------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS \`mensajes_chat\` (
+  \`id\` VARCHAR(50) PRIMARY KEY,
+  \`docente_usuario_id\` VARCHAR(50) NOT NULL,
+  \`padre_usuario_id\` VARCHAR(50) NOT NULL,
+  \`estudiante_id\` VARCHAR(50) NOT NULL,
+  \`remitente_id\` VARCHAR(50) NOT NULL,
+  \`remitente_rol\` ENUM('docente', 'padre') NOT NULL,
+  \`contenido\` TEXT NOT NULL,
+  \`fecha_hora\` DATETIME DEFAULT CURRENT_TIMESTAMP,
+  \`leido\` TINYINT(1) DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ------------------------------------------------------------------------------
+-- 13. TABLA: historial_accesos (Auditoría)
 -- ------------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS \`historial_accesos\` (
   \`id\` BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -189,6 +209,9 @@ CREATE INDEX \`idx_asistencias_aula_fecha\` ON \`asistencias\` (\`aula_id\`, \`f
 CREATE INDEX \`idx_estudiantes_dni\` ON \`estudiantes\` (\`dni\`);
 CREATE INDEX \`idx_estudiantes_aula\` ON \`estudiantes\` (\`aula_id\`);
 CREATE INDEX \`idx_notificaciones_estudiante\` ON \`notificaciones\` (\`estudiante_id\`, \`leida\`);
+CREATE INDEX \`idx_notificaciones_usuario\` ON \`notificaciones\` (\`usuario_destino_id\`, \`leida\`);
+CREATE INDEX \`idx_chat_docente\` ON \`mensajes_chat\` (\`docente_usuario_id\`, \`fecha_hora\`);
+CREATE INDEX \`idx_chat_padre\` ON \`mensajes_chat\` (\`padre_usuario_id\`, \`fecha_hora\`);
 
 -- ------------------------------------------------------------------------------
 -- PROCEDIMIENTO ALMACENADO: REGISTRAR ASISTENCIA QR
@@ -247,7 +270,7 @@ BEGIN
                 v_padre_id,
                 'Asistencia Registrada',
                 CONCAT('Su hijo(a) ', v_nombre_estudiante, ' ingresó a la institución a las ', p_hora_escaneo),
-                'WhatsApp'
+                'App'
             );
 
             SET p_codigo_respuesta = 200;

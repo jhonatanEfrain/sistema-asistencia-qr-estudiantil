@@ -11,6 +11,7 @@ import {
   FileSpreadsheet,
   Code2,
   ShieldAlert,
+  MessageCircle,
   ChevronRight,
   BookOpen
 } from 'lucide-react';
@@ -40,7 +41,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
         { id: 'docentes', label: 'Gestión Docentes', icon: GraduationCap, category: 'Administración' },
         { id: 'padres', label: 'Padres de Familia', icon: UserCheck, category: 'Administración' },
         { id: 'aulas', label: 'Aulas y Grados', icon: Building2, category: 'Administración' },
-        { id: 'comunicados', label: 'Comunicados Escolares', icon: Megaphone, category: 'Comunicación' },
+        { id: 'comunicados', label: 'Comunicados Generales', icon: Megaphone, category: 'Comunicación' },
         { id: 'reportes', label: 'Reportes PDF / Excel', icon: FileSpreadsheet, category: 'Informes' },
         { id: 'documentacion', label: 'Entregables Técnicos & SQL', icon: Code2, category: 'Sistema' },
         { id: 'seguridad', label: 'Usuarios & Seguridad', icon: ShieldAlert, category: 'Sistema' },
@@ -49,7 +50,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
       return [
         { id: 'docente_aulas', label: 'Mis Aulas y Alumnos', icon: Building2, category: 'Docente' },
         { id: 'escaner', label: 'Escanear QR', icon: QrCode, category: 'Docente' },
-        { id: 'comunicados', label: 'Publicar Comunicado', icon: Megaphone, category: 'Docente' },
+        { id: 'comunicados', label: 'Comunicados por Aula', icon: Megaphone, category: 'Comunicación' },
+        { id: 'mensajes', label: 'Chat con Familias', icon: MessageCircle, category: 'Comunicación' },
         { id: 'reportes', label: 'Reportes de Aula', icon: FileSpreadsheet, category: 'Docente' },
         { id: 'documentacion', label: 'Manual del Docente', icon: BookOpen, category: 'Soporte' },
       ];
@@ -57,7 +59,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
       // Padre de familia
       return [
         { id: 'padre_hijo', label: 'Asistencia de mi Hijo(a)', icon: UserCheck, category: 'Padre' },
-        { id: 'comunicados', label: 'Comunicados del Colegio', icon: Megaphone, category: 'Padre' },
+        { id: 'comunicados', label: 'Comunicados para Mí', icon: Megaphone, category: 'Comunicación' },
+        { id: 'mensajes', label: 'Chat con Docentes', icon: MessageCircle, category: 'Comunicación' },
         { id: 'reportes', label: 'Descargar Reporte PDF', icon: FileSpreadsheet, category: 'Padre' },
         { id: 'documentacion', label: 'Guía de Apoderado', icon: BookOpen, category: 'Soporte' },
       ];

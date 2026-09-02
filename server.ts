@@ -53,6 +53,53 @@ async function queryDB<T = any>(sql: string, params: any[] = []): Promise<T | nu
   }
 }
 
+async function ensureCommunicationSchema() {
+  if (!pool) return;
+  const connection = await pool.getConnection();
+
+  try {
+    const ensureColumn = async (table: string, column: string, definition: string) => {
+      const [rows] = await connection.query<any[]>(
+        `SELECT COUNT(*) AS total FROM INFORMATION_SCHEMA.COLUMNS
+         WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = ? AND COLUMN_NAME = ?`,
+        [table, column]
+      );
+      if (Number(rows[0]?.total || 0) === 0) {
+        await connection.query(`ALTER TABLE \`${table}\` ADD COLUMN \`${column}\` ${definition}`);
+      }
+    };
+
+    await ensureColumn('comunicados', 'autor_id', "VARCHAR(50) NOT NULL DEFAULT 'USR-001'");
+    await ensureColumn('comunicados', 'alcance', "ENUM('colegio', 'aula') NOT NULL DEFAULT 'colegio'");
+    await ensureColumn('comunicados', 'aula_id', 'VARCHAR(50) NULL');
+    await ensureColumn('notificaciones', 'usuario_destino_id', 'VARCHAR(50) NULL');
+    await ensureColumn('notificaciones', 'comunicado_id', 'VARCHAR(50) NULL');
+    await ensureColumn('notificaciones', 'tipo', "ENUM('asistencia', 'comunicado', 'mensaje') NOT NULL DEFAULT 'asistencia'");
+
+    await connection.query(`UPDATE notificaciones SET canal = 'App' WHERE canal <> 'App' OR canal IS NULL`);
+    await connection.query(`ALTER TABLE notificaciones MODIFY COLUMN canal ENUM('App') NOT NULL DEFAULT 'App'`);
+
+    await connection.query(`
+      CREATE TABLE IF NOT EXISTS mensajes_chat (
+        id VARCHAR(50) PRIMARY KEY,
+        docente_usuario_id VARCHAR(50) NOT NULL,
+        padre_usuario_id VARCHAR(50) NOT NULL,
+        estudiante_id VARCHAR(50) NOT NULL,
+        remitente_id VARCHAR(50) NOT NULL,
+        remitente_rol ENUM('docente', 'padre') NOT NULL,
+        contenido TEXT NOT NULL,
+        fecha_hora DATETIME NOT NULL,
+        leido BOOLEAN NOT NULL DEFAULT FALSE,
+        INDEX idx_chat_docente (docente_usuario_id, fecha_hora),
+        INDEX idx_chat_padre (padre_usuario_id, fecha_hora),
+        INDEX idx_chat_estudiante (estudiante_id, fecha_hora)
+      )
+    `);
+  } finally {
+    connection.release();
+  }
+}
+
 // ==================== ENDPOINTS API ====================
 
 // Endpoint de verificación del estado de MySQL
@@ -469,7 +516,8 @@ app.post('/api/asistencias', async (req, res) => {
 app.get('/api/comunicados', async (_req, res) => {
   const rows = await queryDB(`
     SELECT id, titulo, descripcion, DATE_FORMAT(fecha, '%Y-%m-%d %H:%i') as fecha, 
-           autor, autor_rol as autorRol, aula_destino as aulaDestino, nivel_destino as nivelDestino
+           autor, autor_id as autorId, autor_rol as autorRol, alcance, aula_id as aulaId,
+           aula_destino as aulaDestino, nivel_destino as nivelDestino
     FROM comunicados ORDER BY fecha DESC
   `);
   if (!rows) return res.status(503).json({ connected: false });
@@ -479,24 +527,112 @@ app.get('/api/comunicados', async (_req, res) => {
 // POST /api/comunicados
 app.post('/api/comunicados', async (req, res) => {
   const com = req.body;
+  if (!com.id || !com.titulo || !com.descripcion || !com.autorId || !com.autorRol || !com.alcance) {
+    return res.status(400).json({ error: 'Datos incompletos para publicar el comunicado.' });
+  }
+
+  const authorRows = await queryDB<any[]>(`
+    SELECT rol, assigned_aulas as assignedAulas
+    FROM usuarios WHERE id = ? AND rol IN ('admin', 'docente') LIMIT 1
+  `, [com.autorId]);
+  if (!authorRows?.length) {
+    return res.status(403).json({ error: 'La cuenta no tiene permisos para publicar comunicados.' });
+  }
+
+  const authorRole = authorRows[0].rol as 'admin' | 'docente';
+  const resolvedAuthorRole = authorRole === 'admin' ? 'Administrador' : 'Docente';
+
+  if (authorRole === 'admin' && com.alcance !== 'colegio') {
+    return res.status(403).json({ error: 'El administrador debe publicar el comunicado para todo el colegio.' });
+  }
+
+  if (authorRole === 'docente') {
+    if (com.alcance !== 'aula' || !com.aulaId) {
+      return res.status(403).json({ error: 'El docente debe seleccionar una de sus aulas asignadas.' });
+    }
+    const assignedAulas = typeof authorRows[0].assignedAulas === 'string'
+      ? JSON.parse(authorRows[0].assignedAulas || '[]')
+      : authorRows[0].assignedAulas || [];
+    if (!assignedAulas.includes(com.aulaId)) {
+      return res.status(403).json({ error: 'No puedes publicar comunicados para un aula no asignada.' });
+    }
+  }
+
   const sql = `
-    INSERT INTO comunicados (id, titulo, descripcion, fecha, autor, autor_rol, aula_destino, nivel_destino)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    INSERT INTO comunicados (
+      id, titulo, descripcion, fecha, autor, autor_id, autor_rol, alcance, aula_id, aula_destino, nivel_destino
+    )
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `;
   const result = await queryDB(sql, [
-    com.id, com.titulo, com.descripcion, com.fecha, com.autor, com.autorRol, com.aulaDestino, com.nivelDestino || 'Todos'
+    com.id, com.titulo, com.descripcion, com.fecha, com.autor, com.autorId, resolvedAuthorRole,
+    com.alcance, com.aulaId || null, com.aulaDestino, com.nivelDestino || 'Todos'
   ]);
   if (!result) return res.status(500).json({ error: 'Error guardando comunicado en MySQL' });
-  return res.json({ success: true });
+
+  const recipients = await queryDB<any[]>(`
+    SELECT u.id as usuarioDestinoId, e.id as estudianteId, p.id as padreId
+    FROM usuarios u
+    INNER JOIN estudiantes e ON e.id = u.estudiante_id
+    LEFT JOIN padres p ON p.estudiante_id = e.id
+    WHERE u.rol = 'padre'
+      AND (? = 'colegio' OR e.aula_id = ?)
+  `, [com.alcance, com.aulaId || null]);
+
+  const notifications: any[] = [];
+  for (const [index, recipient] of (recipients || []).entries()) {
+    const notification = {
+      id: `NOT-COM-${Date.now()}-${index}`,
+      estudianteId: recipient.estudianteId,
+      padreId: recipient.padreId,
+      usuarioDestinoId: recipient.usuarioDestinoId,
+      comunicadoId: com.id,
+      titulo: com.titulo,
+      mensaje: com.descripcion,
+      fechaHora: `${com.fecha}:00`,
+      leida: false,
+      tipo: 'comunicado',
+      canal: 'App'
+    };
+    await queryDB(`
+      INSERT INTO notificaciones (
+        id, estudiante_id, padre_id, usuario_destino_id, comunicado_id,
+        titulo, mensaje, fecha_hora, leida, tipo, canal
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, FALSE, 'comunicado', 'App')
+    `, [
+      notification.id, notification.estudianteId, notification.padreId,
+      notification.usuarioDestinoId, notification.comunicadoId,
+      notification.titulo, notification.mensaje, notification.fechaHora
+    ]);
+    notifications.push(notification);
+  }
+
+  return res.json({ success: true, notifications });
 });
 
 // GET /api/notificaciones
-app.get('/api/notificaciones', async (_req, res) => {
+app.get('/api/notificaciones', async (req, res) => {
+  const { usuarioId, rol, estudianteId } = req.query;
+  let whereClause = '';
+  const params: any[] = [];
+
+  if (usuarioId) {
+    if (rol === 'padre' && estudianteId) {
+      whereClause = 'WHERE usuario_destino_id = ? OR (usuario_destino_id IS NULL AND estudiante_id = ?)';
+      params.push(usuarioId, estudianteId);
+    } else {
+      whereClause = 'WHERE usuario_destino_id = ?';
+      params.push(usuarioId);
+    }
+  }
+
   const rows = await queryDB(`
-    SELECT id, estudiante_id as estudianteId, padre_id as padreId, titulo, mensaje, 
-           DATE_FORMAT(fecha_hora, '%Y-%m-%d %H:%i:%s') as fechaHora, leida, canal
-    FROM notificaciones ORDER BY fecha_hora DESC
-  `);
+    SELECT id, estudiante_id as estudianteId, padre_id as padreId,
+           usuario_destino_id as usuarioDestinoId, comunicado_id as comunicadoId,
+           titulo, mensaje, DATE_FORMAT(fecha_hora, '%Y-%m-%d %H:%i:%s') as fechaHora,
+           leida, tipo, canal
+    FROM notificaciones ${whereClause} ORDER BY fecha_hora DESC
+  `, params);
   if (!rows) return res.status(503).json({ connected: false });
   const formatted = rows.map((r: any) => ({ ...r, leida: Boolean(r.leida) }));
   return res.json({ connected: true, data: formatted });
@@ -505,12 +641,27 @@ app.get('/api/notificaciones', async (_req, res) => {
 // POST /api/notificaciones
 app.post('/api/notificaciones', async (req, res) => {
   const not = req.body;
+  let usuarioDestinoId = not.usuarioDestinoId || null;
+  let padreId = not.padreId || null;
+  if (!usuarioDestinoId && not.estudianteId) {
+    const recipientRows = await queryDB<any[]>(`
+      SELECT u.id as usuarioDestinoId, p.id as padreId
+      FROM usuarios u
+      LEFT JOIN padres p ON p.estudiante_id = u.estudiante_id
+      WHERE u.rol = 'padre' AND u.estudiante_id = ? LIMIT 1
+    `, [not.estudianteId]);
+    usuarioDestinoId = recipientRows?.[0]?.usuarioDestinoId || null;
+    padreId = recipientRows?.[0]?.padreId || padreId;
+  }
   const sql = `
-    INSERT INTO notificaciones (id, estudiante_id, padre_id, titulo, mensaje, fecha_hora, leida, canal)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    INSERT INTO notificaciones (
+      id, estudiante_id, padre_id, usuario_destino_id, comunicado_id,
+      titulo, mensaje, fecha_hora, leida, tipo, canal
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'App')
   `;
   const result = await queryDB(sql, [
-    not.id, not.estudianteId, not.padreId || null, not.titulo, not.mensaje, not.fechaHora, not.leida ? 1 : 0, not.canal || 'WhatsApp'
+    not.id, not.estudianteId, padreId, usuarioDestinoId, not.comunicadoId || null,
+    not.titulo, not.mensaje, not.fechaHora, not.leida ? 1 : 0, not.tipo || 'asistencia'
   ]);
   if (!result) return res.status(500).json({ error: 'Error guardando notificación en MySQL' });
   return res.json({ success: true });
@@ -521,6 +672,114 @@ app.put('/api/notificaciones/:id/read', async (req, res) => {
   const { id } = req.params;
   const result = await queryDB(`UPDATE notificaciones SET leida = TRUE WHERE id = ?`, [id]);
   if (!result) return res.status(500).json({ error: 'Error al actualizar notificación' });
+  return res.json({ success: true });
+});
+
+// GET /api/mensajes-chat - solo devuelve conversaciones del usuario autenticado en la interfaz
+app.get('/api/mensajes-chat', async (req, res) => {
+  const { usuarioId } = req.query;
+  if (!usuarioId) return res.json({ connected: true, data: [] });
+
+  const rows = await queryDB(`
+    SELECT id, docente_usuario_id as docenteUsuarioId, padre_usuario_id as padreUsuarioId,
+           estudiante_id as estudianteId, remitente_id as remitenteId,
+           remitente_rol as remitenteRol, contenido,
+           DATE_FORMAT(fecha_hora, '%Y-%m-%d %H:%i:%s') as fechaHora, leido
+    FROM mensajes_chat
+    WHERE docente_usuario_id = ? OR padre_usuario_id = ?
+    ORDER BY fecha_hora ASC
+  `, [usuarioId, usuarioId]);
+  if (!rows) return res.status(503).json({ connected: false });
+  return res.json({ connected: true, data: rows.map((row: any) => ({ ...row, leido: Boolean(row.leido) })) });
+});
+
+// POST /api/mensajes-chat - valida la relación docente/aula/apoderado antes de guardar
+app.post('/api/mensajes-chat', async (req, res) => {
+  const message = req.body;
+  if (
+    !message.id || !message.docenteUsuarioId || !message.padreUsuarioId ||
+    !message.estudianteId || !message.remitenteId || !message.contenido
+  ) {
+    return res.status(400).json({ error: 'Datos incompletos para enviar el mensaje.' });
+  }
+
+  const studentRows = await queryDB<any[]>(`
+    SELECT aula_id as aulaId FROM estudiantes WHERE id = ? LIMIT 1
+  `, [message.estudianteId]);
+  const teacherRows = await queryDB<any[]>(`
+    SELECT assigned_aulas as assignedAulas FROM usuarios
+    WHERE id = ? AND rol = 'docente' LIMIT 1
+  `, [message.docenteUsuarioId]);
+  const parentRows = await queryDB<any[]>(`
+    SELECT id FROM usuarios
+    WHERE id = ? AND rol = 'padre' AND estudiante_id = ? LIMIT 1
+  `, [message.padreUsuarioId, message.estudianteId]);
+
+  const assignedAulas = teacherRows?.length
+    ? (typeof teacherRows[0].assignedAulas === 'string'
+        ? JSON.parse(teacherRows[0].assignedAulas || '[]')
+        : teacherRows[0].assignedAulas || [])
+    : [];
+  const validRelationship = Boolean(
+    studentRows?.length && parentRows?.length && assignedAulas.includes(studentRows[0].aulaId)
+  );
+  const validSender =
+    (message.remitenteRol === 'docente' && message.remitenteId === message.docenteUsuarioId) ||
+    (message.remitenteRol === 'padre' && message.remitenteId === message.padreUsuarioId);
+
+  if (!validRelationship || !validSender) {
+    return res.status(403).json({ error: 'No existe una relación válida entre el docente, el aula y el apoderado.' });
+  }
+
+  const result = await queryDB(`
+    INSERT INTO mensajes_chat (
+      id, docente_usuario_id, padre_usuario_id, estudiante_id,
+      remitente_id, remitente_rol, contenido, fecha_hora, leido
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, FALSE)
+  `, [
+    message.id, message.docenteUsuarioId, message.padreUsuarioId, message.estudianteId,
+    message.remitenteId, message.remitenteRol, message.contenido.trim(), message.fechaHora
+  ]);
+  if (!result) return res.status(500).json({ error: 'No se pudo guardar el mensaje.' });
+
+  const destinationId = message.remitenteRol === 'docente'
+    ? message.padreUsuarioId
+    : message.docenteUsuarioId;
+  const notification = {
+    id: `NOT-MSG-${Date.now()}`,
+    estudianteId: message.estudianteId,
+    usuarioDestinoId: destinationId,
+    titulo: 'Nuevo mensaje privado',
+    mensaje: message.contenido.trim(),
+    fechaHora: message.fechaHora,
+    leida: false,
+    tipo: 'mensaje',
+    canal: 'App'
+  };
+  await queryDB(`
+    INSERT INTO notificaciones (
+      id, estudiante_id, usuario_destino_id, titulo, mensaje,
+      fecha_hora, leida, tipo, canal
+    ) VALUES (?, ?, ?, ?, ?, ?, FALSE, 'mensaje', 'App')
+  `, [
+    notification.id, notification.estudianteId, notification.usuarioDestinoId,
+    notification.titulo, notification.mensaje, notification.fechaHora
+  ]);
+
+  return res.json({ success: true, notification });
+});
+
+app.put('/api/mensajes-chat/read', async (req, res) => {
+  const { docenteUsuarioId, padreUsuarioId, estudianteId, lectorId } = req.body;
+  if (!docenteUsuarioId || !padreUsuarioId || !estudianteId || !lectorId) {
+    return res.status(400).json({ error: 'Datos incompletos.' });
+  }
+  const result = await queryDB(`
+    UPDATE mensajes_chat SET leido = TRUE
+    WHERE docente_usuario_id = ? AND padre_usuario_id = ? AND estudiante_id = ?
+      AND remitente_id <> ?
+  `, [docenteUsuarioId, padreUsuarioId, estudianteId, lectorId]);
+  if (!result) return res.status(500).json({ error: 'No se pudo actualizar la conversación.' });
   return res.json({ success: true });
 });
 
@@ -536,6 +795,11 @@ app.get('/api/aulas', async (_req, res) => {
 
 // Configuración de Servidor de Desarrollo con Middleware de Vite
 async function startServer() {
+  try {
+    await ensureCommunicationSchema();
+  } catch (error) {
+    console.warn('⚠️ No se pudo actualizar el esquema de comunicación.', error);
+  }
   if (process.env.NODE_ENV !== 'production') {
     const vite = await createViteServer({
       server: { middlewareMode: true },

@@ -76,7 +76,7 @@ export const SystemDocsView: React.FC = () => {
           { id: 'folders', label: '4. Estructura de Carpetas', icon: FolderTree },
           { id: 'manuals', label: '5. Manual Instalación / Usuario', icon: BookOpen },
           { id: 'api', label: '6. API REST & Servicios', icon: Terminal },
-          { id: 'futuras', label: '7. Mejoras Futuras (WhatsApp & App)', icon: Smartphone },
+          { id: 'futuras', label: '7. Mejoras Futuras de la App', icon: Smartphone },
         ].map(tab => {
           const Icon = tab.icon;
           const isActive = activeDocTab === tab.id;
@@ -177,15 +177,21 @@ export const SystemDocsView: React.FC = () => {
               },
               {
                 table: 'comunicados',
-                pk: 'id (INT AUTO_INCREMENT)',
-                fk: 'aula_destino_id -> aulas.id',
-                fields: ['titulo', 'descripcion', 'fecha_publicacion', 'autor_nombre', 'nivel_destino']
+                pk: 'id (VARCHAR)',
+                fk: 'aula_id -> aulas.id',
+                fields: ['titulo', 'descripcion', 'autor_id', 'alcance', 'aula_id']
               },
               {
                 table: 'notificaciones',
-                pk: 'id (BIGINT AUTO_INCREMENT)',
-                fk: 'estudiante_id -> estudiantes.id, padre_id -> padres.id',
-                fields: ['titulo', 'mensaje', 'canal (WhatsApp/App)', 'estado_envio']
+                pk: 'id (VARCHAR)',
+                fk: 'estudiante_id y usuario_destino_id',
+                fields: ['titulo', 'mensaje', 'tipo', 'canal (App)', 'leida']
+              },
+              {
+                table: 'mensajes_chat',
+                pk: 'id (VARCHAR)',
+                fk: 'docente, apoderado y estudiante vinculados',
+                fields: ['remitente_id', 'remitente_rol', 'contenido', 'fecha_hora', 'leido']
               },
               {
                 table: 'historial_accesos',
@@ -259,7 +265,7 @@ export const SystemDocsView: React.FC = () => {
               <ul className="space-y-1.5 text-slate-300 list-disc pl-4">
                 <li>CU12: Iniciar Sesión (Nombre Hijo + DNI)</li>
                 <li>CU13: Ver Estado de Ingreso del Día (Presente/Tardanza)</li>
-                <li>CU14: Recibir Notificación Push / WhatsApp</li>
+                <li>CU14: Recibir notificaciones internas según el estudiante asociado</li>
                 <li>CU15: Consultar Comunicados Escolares</li>
                 <li>CU16: Descargar Reporte PDF Individual</li>
               </ul>
@@ -310,7 +316,7 @@ export const SystemDocsView: React.FC = () => {
 │       ├── teacher/
 │       │   └── TeacherPortal.tsx  # Portal de Aulas asignadas al docente
 │       ├── parent/
-│       │   └── ParentPortal.tsx   # Portal del Apoderado con avisos WhatsApp
+│       │   └── ParentPortal.tsx   # Portal del Apoderado con avisos internos
 │       ├── reports/
 │       │   └── ReportsView.tsx    # Centro de exportación de informes PDF/Excel
 │       └── docs/
@@ -431,9 +437,9 @@ export const SystemDocsView: React.FC = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-xs">
             <div className="p-4 bg-slate-950 rounded-2xl border border-slate-800 space-y-2">
-              <h4 className="font-bold text-emerald-400 text-sm">1. WhatsApp API Oficial</h4>
+              <h4 className="font-bold text-emerald-400 text-sm">1. Centro de mensajería interno</h4>
               <p className="text-slate-300">
-                Integración con Twilio o Meta WhatsApp Business Cloud API para envío automático de mensajes de confirmación de asistencia.
+                Comunicaciones privadas y avisos de asistencia centralizados dentro de la plataforma institucional.
               </p>
             </div>
 

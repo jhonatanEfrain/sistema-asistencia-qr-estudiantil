@@ -17,6 +17,7 @@ import { TeacherPortal } from './components/teacher/TeacherPortal';
 import { ParentPortal } from './components/parent/ParentPortal';
 import { ReportsView } from './components/reports/ReportsView';
 import { SystemDocsView } from './components/docs/SystemDocsView';
+import { CommunicationCenter } from './components/communications/CommunicationCenter';
 
 const MainAppContent: React.FC = () => {
   const {
@@ -70,7 +71,8 @@ const MainAppContent: React.FC = () => {
         return <SystemDocsView />;
 
       case 'comunicados':
-        return currentRole === 'padre' ? <ParentPortal /> : <TeacherPortal />;
+      case 'mensajes':
+        return <CommunicationCenter />;
 
       case 'escaner':
         return <AdminDashboard />;

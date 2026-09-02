@@ -44,8 +44,8 @@ export const LoginView: React.FC = () => {
       setEmailOrDni('c.flores@colegio.edu.pe');
       setPassword('docente123');
     } else {
-      setEmailOrDni('jalvarez@gmail.com');
-      setPassword('padre123');
+      setEmailOrDni('rruiz@gmail.com');
+      setPassword('73920412');
     }
   };
 

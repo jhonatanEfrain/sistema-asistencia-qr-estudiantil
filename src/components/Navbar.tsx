@@ -33,7 +33,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar, isSidebarOpen }
     currentUser,
     currentRole,
     switchRole,
-    notificaciones,
+    notificacionesVisibles,
     setIsScannerModalOpen,
     soundEnabled,
     setSoundEnabled,
@@ -50,7 +50,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar, isSidebarOpen }
   const [isDbModalOpen, setIsDbModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
 
-  const unreadCount = notificaciones.filter(n => !n.leida).length;
+  const unreadCount = notificacionesVisibles.filter(n => !n.leida).length;
 
   const handleSearch = (event: React.FormEvent) => {
     event.preventDefault();
@@ -64,7 +64,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar, isSidebarOpen }
       { terms: ['aula', 'grado', 'sección'], tab: 'aulas' },
       { terms: ['reporte', 'excel', 'pdf'], tab: 'reportes' },
       { terms: ['usuario', 'seguridad'], tab: 'seguridad' },
-      { terms: ['comunicado', 'aviso'], tab: 'comunicados' }
+      { terms: ['comunicado', 'aviso'], tab: 'comunicados' },
+      { terms: ['chat', 'mensaje', 'conversación'], tab: 'mensajes' }
     ];
 
     const match = destinations.find(item => item.terms.some(term => value.includes(term)));
@@ -201,10 +202,10 @@ export const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar, isSidebarOpen }
                   </span>
                 </div>
                 <div className="max-h-80 overflow-y-auto divide-y divide-slate-800/60">
-                  {notificaciones.length === 0 ? (
+                  {notificacionesVisibles.length === 0 ? (
                     <div className="p-4 text-center text-slate-400">Sin notificaciones por el momento</div>
                   ) : (
-                    notificaciones.slice(0, 6).map(n => (
+                    notificacionesVisibles.slice(0, 6).map(n => (
                       <div
                         key={n.id}
                         onClick={() => markNotificationAsRead(n.id)}
