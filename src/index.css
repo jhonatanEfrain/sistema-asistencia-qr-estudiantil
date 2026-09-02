@@ -1,7 +1,8 @@
+@import "@fontsource-variable/manrope";
 @import "tailwindcss";
 
 :root {
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-family: "Manrope Variable", Manrope, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
 }
@@ -99,6 +100,31 @@ textarea {
   box-shadow: 0 20px 45px rgba(48, 73, 153, 0.2);
 }
 
+.dashboard-hero-image {
+  position: absolute;
+  inset: 0 0 0 auto;
+  width: 58%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 52% center;
+  opacity: 0.98;
+}
+
+.dashboard-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, #3e5db4 0%, rgba(63, 94, 184, 0.96) 36%, rgba(63, 94, 184, 0.35) 68%, rgba(63, 94, 184, 0.06) 100%);
+}
+
+.shortcut-card {
+  min-height: 142px;
+  box-shadow: 0 16px 34px rgba(44, 70, 155, 0.18);
+}
+
+.shortcut-card:hover {
+  box-shadow: 0 22px 44px rgba(44, 70, 155, 0.25);
+}
+
 .quick-scan-card {
   border-color: #e3e8f3 !important;
   box-shadow: 0 12px 32px rgba(42, 61, 110, 0.07);
@@ -168,6 +194,15 @@ textarea {
 @media (max-width: 767px) {
   .app-frame {
     min-height: 100vh;
+  }
+
+  .dashboard-hero-image {
+    width: 100%;
+    opacity: 0.28;
+  }
+
+  .dashboard-hero-overlay {
+    background: linear-gradient(90deg, rgba(54, 80, 162, 0.98), rgba(54, 80, 162, 0.8));
   }
 }
 

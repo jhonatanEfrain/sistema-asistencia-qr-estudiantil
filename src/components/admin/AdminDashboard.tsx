@@ -15,8 +15,11 @@ import {
   AlertTriangle,
   X,
   Sparkles,
-  Search
+  Search,
+  FileSpreadsheet,
+  GraduationCap
 } from 'lucide-react';
+import attendanceHero from '../../assets/attendance-hero.png';
 import {
   ResponsiveContainer,
   AreaChart,
@@ -159,8 +162,14 @@ export const AdminDashboard: React.FC = () => {
       )}
 
       {/* Header Banner */}
-      <div className="dashboard-hero border rounded-3xl p-6 sm:p-7 relative overflow-hidden flex flex-col md:flex-row items-start md:items-center justify-between gap-5">
-        <div className="space-y-1 z-10">
+      <div className="dashboard-hero min-h-[280px] border rounded-3xl p-6 sm:p-8 relative overflow-hidden flex flex-col md:flex-row items-start md:items-center justify-between gap-5">
+        <img
+          src={attendanceHero}
+          alt="Estudiantes registrando su asistencia con código QR"
+          className="dashboard-hero-image"
+        />
+        <div className="dashboard-hero-overlay" />
+        <div className="space-y-1 z-10 max-w-xl">
           <div className="flex items-center gap-2">
             <span className="px-3 py-1 rounded-full text-[10px] font-bold bg-white/15 text-white border border-white/20 backdrop-blur-sm">
               ● Sistema en Vivo
@@ -172,18 +181,60 @@ export const AdminDashboard: React.FC = () => {
           <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight mt-3">
             Panel de Control Institucional
           </h2>
-          <p className="text-xs sm:text-sm text-blue-100/85 max-w-2xl">
+          <p className="text-xs sm:text-sm text-blue-100/90 max-w-lg leading-relaxed">
             Monitoreo en tiempo real de asistencia por código QR para Primaria y Secundaria
           </p>
+          <div className="flex flex-wrap gap-3 pt-5">
+            <button
+              onClick={() => setIsScannerModalOpen(true)}
+              className="flex items-center gap-2.5 px-5 py-3 rounded-2xl bg-white hover:bg-blue-50 text-blue-700 font-extrabold text-sm shadow-xl shadow-blue-950/15 transition-all transform hover:-translate-y-0.5 active:scale-95"
+            >
+              <QrCode className="w-5 h-5" />
+              <span>Abrir escáner QR</span>
+            </button>
+            <button
+              onClick={() => setActiveTab('estudiantes')}
+              className="flex items-center gap-2 px-5 py-3 rounded-2xl bg-blue-950/20 hover:bg-blue-950/30 text-white border border-white/20 font-bold text-sm backdrop-blur-md transition-all"
+            >
+              <Users className="w-4 h-4" />
+              <span>Gestionar estudiantes</span>
+            </button>
+          </div>
         </div>
+      </div>
 
-        <button
-          onClick={() => setIsScannerModalOpen(true)}
-          className="z-10 flex items-center gap-2.5 px-5 py-3 rounded-2xl bg-white hover:bg-blue-50 text-blue-700 font-extrabold text-sm shadow-xl shadow-blue-950/15 transition-all transform hover:-translate-y-0.5 active:scale-95"
-        >
-          <QrCode className="w-5 h-5" />
-          <span>Abrir Escáner QR Cámara</span>
-        </button>
+      {/* Main shortcuts inspired by the visual reference */}
+      <div className="grid grid-cols-2 xl:grid-cols-4 gap-3 sm:gap-4">
+        {[
+          { id: 'estudiantes', label: 'Estudiantes', detail: 'Matrícula y carnés QR', icon: Users, color: 'from-blue-600 to-indigo-500' },
+          { id: 'docentes', label: 'Docentes', detail: 'Personal y asignaciones', icon: GraduationCap, color: 'from-violet-600 to-purple-500' },
+          { id: 'aulas', label: 'Aulas', detail: 'Grados y secciones', icon: Building2, color: 'from-cyan-600 to-blue-500' },
+          { id: 'reportes', label: 'Reportes', detail: 'PDF, Excel y métricas', icon: FileSpreadsheet, color: 'from-orange-500 to-rose-500' }
+        ].map(item => {
+          const Icon = item.icon;
+          return (
+            <button
+              key={item.id}
+              onClick={() => setActiveTab(item.id)}
+              className={`shortcut-card group relative overflow-hidden text-left p-4 sm:p-5 rounded-3xl bg-gradient-to-br ${item.color} text-white shadow-lg transition-all hover:-translate-y-1`}
+            >
+              <span className="absolute -right-7 -bottom-8 w-24 h-24 rounded-full bg-white/10" />
+              <div className="relative flex items-start justify-between gap-3">
+                <div>
+                  <p className="text-base font-extrabold">{item.label}</p>
+                  <p className="text-[11px] text-white/75 mt-1">{item.detail}</p>
+                </div>
+                <span className="w-10 h-10 rounded-2xl bg-white/18 flex items-center justify-center backdrop-blur-sm group-hover:scale-110 transition-transform">
+                  <Icon className="w-5 h-5" />
+                </span>
+              </div>
+              <div className="relative mt-5 flex items-center gap-1.5 text-[11px] font-bold text-white/90">
+                <span>Abrir módulo</span>
+                <ArrowUpRight className="w-3.5 h-3.5" />
+              </div>
+            </button>
+          );
+        })}
       </div>
 
       {/* Embedded Quick Scanner Bar on Dashboard */}

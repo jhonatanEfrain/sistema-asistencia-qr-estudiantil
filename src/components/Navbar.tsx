@@ -16,7 +16,9 @@ import {
   ChevronDown,
   Database,
   Sun,
-  Moon
+  Moon,
+  Search,
+  MapPin
 } from 'lucide-react';
 
 interface NavbarProps {
@@ -37,18 +39,40 @@ export const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar, isSidebarOpen }
     markNotificationAsRead,
     logout,
     theme,
-    toggleTheme
+    toggleTheme,
+    setActiveTab
   } = useApp();
 
   const [showRoleDropdown, setShowRoleDropdown] = useState(false);
   const [showNotificationsPopover, setShowNotificationsPopover] = useState(false);
   const [isDbModalOpen, setIsDbModalOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
 
   const unreadCount = notificaciones.filter(n => !n.leida).length;
 
+  const handleSearch = (event: React.FormEvent) => {
+    event.preventDefault();
+    const value = searchTerm.trim().toLowerCase();
+    if (!value) return;
+
+    const destinations = [
+      { terms: ['alumno', 'estudiante', 'matrícula'], tab: 'estudiantes' },
+      { terms: ['docente', 'profesor'], tab: 'docentes' },
+      { terms: ['padre', 'apoderado'], tab: 'padres' },
+      { terms: ['aula', 'grado', 'sección'], tab: 'aulas' },
+      { terms: ['reporte', 'excel', 'pdf'], tab: 'reportes' },
+      { terms: ['usuario', 'seguridad'], tab: 'seguridad' },
+      { terms: ['comunicado', 'aviso'], tab: 'comunicados' }
+    ];
+
+    const match = destinations.find(item => item.terms.some(term => value.includes(term)));
+    setActiveTab(match?.tab || 'dashboard');
+    setSearchTerm('');
+  };
+
   return (
     <header className="app-navbar sticky top-0 z-50 bg-white text-slate-900 border-b border-slate-200/80">
-      <div className="px-4 py-3 sm:px-6 flex items-center justify-between min-h-[68px]">
+      <div className="px-4 py-3 sm:px-6 flex items-center gap-4 min-h-[72px]">
         {/* Left: Mobile Drawer Button & Logo */}
         <div className="flex items-center gap-3">
           <button
@@ -75,8 +99,26 @@ export const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar, isSidebarOpen }
           </div>
         </div>
 
+        <form onSubmit={handleSearch} className="hidden lg:block flex-1 max-w-xl mx-auto">
+          <div className="relative">
+            <Search className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
+            <input
+              value={searchTerm}
+              onChange={event => setSearchTerm(event.target.value)}
+              className="w-full h-11 pl-11 pr-16 rounded-2xl bg-slate-50 border border-slate-200 text-xs text-slate-800 placeholder:text-slate-400 focus:outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-500/10"
+              placeholder="Buscar estudiantes, docentes, aulas o reportes..."
+              aria-label="Buscar módulos del sistema"
+            />
+            <span className="absolute right-3 top-1/2 -translate-y-1/2 px-2 py-1 rounded-lg border border-slate-200 text-[9px] font-bold text-slate-400">ENTER</span>
+          </div>
+        </form>
+
         {/* Center/Right Actions */}
-        <div className="flex items-center gap-2 sm:gap-3">
+        <div className="ml-auto flex items-center gap-1.5 sm:gap-2">
+          <div className="hidden xl:flex items-center gap-1.5 px-3 py-2 rounded-xl bg-blue-50 text-blue-700 text-[10px] font-bold">
+            <MapPin className="w-3.5 h-3.5" />
+            <span>Institución educativa</span>
+          </div>
           {/* MySQL Database Status Button */}
           <button
             onClick={() => setIsDbModalOpen(true)}
