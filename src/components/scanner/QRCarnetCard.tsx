@@ -18,12 +18,12 @@ export const QRCarnetCard: React.FC<QRCarnetCardProps> = ({ estudiante }) => {
   return (
     <div className="w-full max-w-sm bg-gradient-to-br from-slate-900 to-slate-950 border border-slate-800 rounded-3xl p-4 shadow-xl text-white relative overflow-hidden group">
       {/* Decorative top header accent */}
-      <div className="h-2 w-full bg-gradient-to-r from-blue-600 via-indigo-500 to-emerald-400 absolute top-0 left-0" />
+      <div className="h-2 w-full bg-gradient-to-r from-red-600 via-rose-500 to-emerald-400 absolute top-0 left-0" />
 
       {/* Header */}
       <div className="flex items-center justify-between pb-3 border-b border-slate-800/80">
         <div className="flex items-center gap-2">
-          <div className="w-7 h-7 rounded-lg bg-blue-600/20 text-blue-400 flex items-center justify-center font-bold text-xs">
+          <div className="w-7 h-7 rounded-lg bg-red-600/20 text-red-400 flex items-center justify-center font-bold text-xs">
             IE
           </div>
           <div>
@@ -33,7 +33,7 @@ export const QRCarnetCard: React.FC<QRCarnetCardProps> = ({ estudiante }) => {
             <p className="text-[9px] text-slate-400 font-medium">Carnet de Identificación Estudiantil</p>
           </div>
         </div>
-        <span className="px-2 py-0.5 rounded-full text-[9px] font-bold bg-blue-500/10 text-blue-400 border border-blue-500/20">
+        <span className="px-2 py-0.5 rounded-full text-[9px] font-bold bg-red-500/10 text-red-400 border border-red-500/20">
           2026
         </span>
       </div>
@@ -54,7 +54,7 @@ export const QRCarnetCard: React.FC<QRCarnetCardProps> = ({ estudiante }) => {
           <p className="text-sm font-bold text-slate-100 truncate leading-tight">
             {estudiante.apellidos}
           </p>
-          <p className="text-xs text-blue-400 font-semibold truncate leading-tight mb-2">
+          <p className="text-xs text-red-400 font-semibold truncate leading-tight mb-2">
             {estudiante.nombres}
           </p>
 
@@ -85,7 +85,7 @@ export const QRCarnetCard: React.FC<QRCarnetCardProps> = ({ estudiante }) => {
           className="flex items-center gap-1 px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 transition-colors"
           title="Descargar Carnet PDF"
         >
-          <Printer className="w-3 h-3 text-blue-400" />
+          <Printer className="w-3 h-3 text-red-400" />
           <span>Imprimir</span>
         </button>
       </div>

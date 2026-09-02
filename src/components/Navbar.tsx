@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
 import { DatabaseStatusModal } from './DatabaseStatusModal';
+import schoolCrest from '../assets/josdic-crest.png';
 import {
   QrCode,
   Bell,
@@ -80,7 +81,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar, isSidebarOpen }
         <div className="flex items-center gap-3">
           <button
             onClick={onToggleSidebar}
-            className="p-2.5 rounded-xl hover:bg-blue-50 text-slate-500 focus:outline-none transition-colors"
+            className="p-2.5 rounded-xl hover:bg-red-50 text-slate-500 focus:outline-none transition-colors"
             title="Menú de navegación"
             id="btn-toggle-sidebar"
           >
@@ -93,8 +94,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar, isSidebarOpen }
           </button>
 
           <div className="flex items-center gap-2.5">
-            <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-blue-700 to-indigo-500 flex items-center justify-center text-white font-bold shadow-md shadow-blue-500/20">
-              <QrCode className="w-5 h-5" />
+            <div className="w-12 h-12 rounded-2xl border border-red-100 bg-white flex items-center justify-center p-0.5 shadow-md shadow-red-900/10">
+              <img src={schoolCrest} alt="Insignia JOSDIC" className="w-full h-full object-contain drop-shadow-sm" />
             </div>
             <div>
               <h1 className="text-sm sm:text-base font-extrabold tracking-tight text-slate-900 leading-tight">
@@ -113,7 +114,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar, isSidebarOpen }
             <input
               value={searchTerm}
               onChange={event => setSearchTerm(event.target.value)}
-              className="w-full h-11 pl-11 pr-16 rounded-2xl bg-slate-50 border border-slate-200 text-xs text-slate-800 placeholder:text-slate-400 focus:outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-500/10"
+              className="w-full h-11 pl-11 pr-16 rounded-2xl bg-slate-50 border border-slate-200 text-xs text-slate-800 placeholder:text-slate-400 focus:outline-none focus:border-red-400 focus:ring-4 focus:ring-red-500/10"
               placeholder="Buscar estudiantes, docentes, aulas o reportes..."
               aria-label="Buscar módulos del sistema"
             />
@@ -123,18 +124,18 @@ export const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar, isSidebarOpen }
 
         {/* Center/Right Actions */}
         <div className="ml-auto flex items-center gap-1.5 sm:gap-2">
-          <div className="hidden xl:flex items-center gap-1.5 px-3 py-2 rounded-xl bg-blue-50 text-blue-700 text-[10px] font-bold">
+          <div className="hidden xl:flex items-center gap-1.5 px-3 py-2 rounded-xl bg-red-50 text-red-700 text-[10px] font-bold">
             <MapPin className="w-3.5 h-3.5" />
             <span>Institución educativa</span>
           </div>
           {/* MySQL Database Status Button */}
           <button
             onClick={() => setIsDbModalOpen(true)}
-            className="flex items-center gap-1.5 px-2.5 py-1.5 sm:px-3 rounded-xl bg-slate-800 hover:bg-slate-700/80 text-blue-400 border border-slate-700/80 text-xs font-semibold transition-colors"
+            className="flex items-center gap-1.5 px-2.5 py-1.5 sm:px-3 rounded-xl bg-slate-800 hover:bg-slate-700/80 text-red-400 border border-slate-700/80 text-xs font-semibold transition-colors"
             title="Estado de conexión MySQL"
             id="btn-db-status"
           >
-            <Database className="w-3.5 h-3.5 text-blue-400" />
+            <Database className="w-3.5 h-3.5 text-red-400" />
             <span className="hidden md:inline">MySQL</span>
           </button>
 
@@ -172,7 +173,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar, isSidebarOpen }
             {theme === 'dark' ? (
               <Sun className="w-4 h-4 text-amber-400 animate-spin-slow" />
             ) : (
-              <Moon className="w-4 h-4 text-blue-400" />
+              <Moon className="w-4 h-4 text-red-400" />
             )}
           </button>
 
@@ -197,7 +198,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar, isSidebarOpen }
               <div className="absolute right-0 mt-2 w-80 sm:w-96 bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl py-2 z-50 text-slate-100 text-xs">
                 <div className="px-4 py-2 border-b border-slate-800 flex items-center justify-between">
                   <span className="font-bold text-sm text-slate-200">Notificaciones Recientes</span>
-                  <span className="text-[11px] bg-blue-500/20 text-blue-400 px-2 py-0.5 rounded-full font-medium">
+                  <span className="text-[11px] bg-red-500/20 text-red-400 px-2 py-0.5 rounded-full font-medium">
                     {unreadCount} nuevas
                   </span>
                 </div>
@@ -210,7 +211,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar, isSidebarOpen }
                         key={n.id}
                         onClick={() => markNotificationAsRead(n.id)}
                         className={`p-3 hover:bg-slate-800/60 transition-colors cursor-pointer ${
-                          !n.leida ? 'bg-blue-950/30' : ''
+                          !n.leida ? 'bg-red-950/30' : ''
                         }`}
                       >
                         <div className="flex items-center justify-between font-semibold text-slate-200 mb-1">
@@ -222,7 +223,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar, isSidebarOpen }
                           <span className="px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 font-medium">
                             Canal: {n.canal}
                           </span>
-                          {!n.leida && <span className="text-blue-400 font-semibold">• Marcar como leída</span>}
+                          {!n.leida && <span className="text-red-400 font-semibold">• Marcar como leída</span>}
                         </div>
                       </div>
                     ))
@@ -242,7 +243,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar, isSidebarOpen }
               <img
                 src={currentUser.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200'}
                 alt={currentUser.name}
-                className="w-7 h-7 rounded-lg object-cover ring-2 ring-blue-500/40"
+                className="w-7 h-7 rounded-lg object-cover ring-2 ring-red-500/40"
               />
               <div className="text-left hidden md:block">
                 <p className="text-xs font-semibold text-slate-200 truncate max-w-[120px]">{currentUser.name}</p>
@@ -261,13 +262,13 @@ export const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar, isSidebarOpen }
                   <img
                     src={currentUser.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200'}
                     alt={currentUser.name}
-                    className="w-10 h-10 rounded-xl object-cover ring-2 ring-blue-500/50"
+                    className="w-10 h-10 rounded-xl object-cover ring-2 ring-red-500/50"
                   />
                   <div className="overflow-hidden">
                     <p className="text-xs font-bold text-slate-100 truncate">{currentUser.name}</p>
                     <p className="text-[10px] text-slate-400 truncate">{currentUser.email}</p>
-                    <div className="mt-1 inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20 text-[10px] font-medium capitalize">
-                      <span className="w-1.5 h-1.5 rounded-full bg-blue-400"></span>
+                    <div className="mt-1 inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-red-500/10 text-red-400 border border-red-500/20 text-[10px] font-medium capitalize">
+                      <span className="w-1.5 h-1.5 rounded-full bg-red-400"></span>
                       <span>Rol: {currentRole === 'admin' ? 'Administrador' : currentRole === 'docente' ? 'Docente' : 'Apoderado'}</span>
                     </div>
                   </div>

@@ -43,9 +43,9 @@ export const SystemDocsView: React.FC = () => {
   return (
     <div className="space-y-6 pb-10 animate-fade-in">
       {/* Header */}
-      <div className="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+      <div className="bg-gradient-to-r from-slate-900 via-rose-950 to-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div>
-          <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
+          <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-rose-500/10 text-rose-400 border border-rose-500/20">
             Documentación Técnica Oficial
           </span>
           <h2 className="text-xl font-bold text-white mt-1">
@@ -87,7 +87,7 @@ export const SystemDocsView: React.FC = () => {
               onClick={() => setActiveDocTab(tab.id)}
               className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold transition-all ${
                 isActive
-                  ? 'bg-blue-600 text-white shadow-md'
+                  ? 'bg-red-600 text-white shadow-md'
                   : 'bg-slate-900 text-slate-400 hover:bg-slate-800 border border-slate-800'
               }`}
             >
@@ -133,7 +133,7 @@ export const SystemDocsView: React.FC = () => {
       {activeDocTab === 'er' && (
         <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 space-y-5">
           <h3 className="text-sm font-bold text-white flex items-center gap-2 border-b border-slate-800 pb-3">
-            <Layers className="w-4 h-4 text-blue-400" />
+            <Layers className="w-4 h-4 text-red-400" />
             Diagrama Entidad-Relación (MER) de la Base de Datos
           </h3>
 
@@ -207,7 +207,7 @@ export const SystemDocsView: React.FC = () => {
                     MySQL
                   </span>
                 </div>
-                <p className="text-slate-400"><strong className="text-blue-400">PK:</strong> {item.pk}</p>
+                <p className="text-slate-400"><strong className="text-red-400">PK:</strong> {item.pk}</p>
                 <p className="text-slate-400"><strong className="text-amber-400">FK:</strong> {item.fk}</p>
                 <div className="pt-1 border-t border-slate-900 text-slate-300">
                   <span className="text-slate-500 block text-[10px]">Atributos clave:</span>
@@ -229,7 +229,7 @@ export const SystemDocsView: React.FC = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs">
             <div className="p-5 bg-slate-950 rounded-2xl border border-slate-800 space-y-3">
-              <h4 className="font-bold text-blue-400 text-sm flex items-center gap-2">
+              <h4 className="font-bold text-red-400 text-sm flex items-center gap-2">
                 <ShieldCheck className="w-4 h-4" />
                 Rol: Administrador
               </h4>
@@ -343,10 +343,10 @@ export const SystemDocsView: React.FC = () => {
                   <strong>Base de Datos:</strong> Crear base de datos <code className="text-emerald-400">asistencia_qr_db</code> y ejecutar el script en la pestaña SQL.
                 </li>
                 <li>
-                  <strong>Instalar dependencias:</strong> Executar <code className="text-blue-400">npm install</code>.
+                  <strong>Instalar dependencias:</strong> Executar <code className="text-red-400">npm install</code>.
                 </li>
                 <li>
-                  <strong>Iniciar Entorno:</strong> Ejecutar <code className="text-blue-400">npm run dev</code> y acceder a <code className="text-emerald-400">http://localhost:3000</code>.
+                  <strong>Iniciar Entorno:</strong> Ejecutar <code className="text-red-400">npm run dev</code> y acceder a <code className="text-emerald-400">http://localhost:3000</code>.
                 </li>
               </ol>
             </div>
@@ -405,7 +405,7 @@ export const SystemDocsView: React.FC = () => {
             ].map(api => (
               <div key={api.endpoint} className="p-4 bg-slate-950 rounded-2xl border border-slate-800 space-y-2">
                 <div className="flex items-center gap-2">
-                  <span className="px-2 py-0.5 rounded font-bold text-[10px] bg-blue-600 text-white font-mono">
+                  <span className="px-2 py-0.5 rounded font-bold text-[10px] bg-red-600 text-white font-mono">
                     {api.method}
                   </span>
                   <span className="font-mono text-emerald-400 font-bold">{api.endpoint}</span>
@@ -413,7 +413,7 @@ export const SystemDocsView: React.FC = () => {
                 <p className="text-slate-300">{api.desc}</p>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-[10px] font-mono">
                   <div className="bg-slate-900 p-2 rounded-xl text-slate-400">
-                    <span className="text-blue-400 block font-bold">Payload Request:</span>
+                    <span className="text-red-400 block font-bold">Payload Request:</span>
                     {api.payload}
                   </div>
                   <div className="bg-slate-900 p-2 rounded-xl text-slate-400">
@@ -444,7 +444,7 @@ export const SystemDocsView: React.FC = () => {
             </div>
 
             <div className="p-4 bg-slate-950 rounded-2xl border border-slate-800 space-y-2">
-              <h4 className="font-bold text-blue-400 text-sm">2. Reconocimiento Facial</h4>
+              <h4 className="font-bold text-red-400 text-sm">2. Reconocimiento Facial</h4>
               <p className="text-slate-300">
                 Lector alternativo mediante cámara web asistida por Inteligencia Artificial para evitar olvidos de carnets físicos.
               </p>

@@ -12,7 +12,7 @@ export const ClassroomManager: React.FC = () => {
     <div className="space-y-6 pb-10 animate-fade-in">
       <div>
         <h2 className="text-xl font-bold text-white flex items-center gap-2">
-          <Building2 className="w-6 h-6 text-indigo-400" />
+          <Building2 className="w-6 h-6 text-rose-400" />
           Aulas y Grados Institucionales
         </h2>
         <p className="text-xs text-slate-400">
@@ -22,8 +22,8 @@ export const ClassroomManager: React.FC = () => {
 
       {/* Primaria */}
       <div className="space-y-3">
-        <h3 className="text-sm font-bold text-blue-400 uppercase tracking-wider flex items-center gap-2">
-          <span className="w-2.5 h-2.5 rounded-full bg-blue-500" />
+        <h3 className="text-sm font-bold text-red-400 uppercase tracking-wider flex items-center gap-2">
+          <span className="w-2.5 h-2.5 rounded-full bg-red-500" />
           Nivel Primaria (1.° a 6.° Grado)
         </h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -37,7 +37,7 @@ export const ClassroomManager: React.FC = () => {
             return (
               <div key={aula.id} className="p-5 bg-slate-900 border border-slate-800 rounded-3xl space-y-3 shadow-sm hover:border-slate-700 transition-colors">
                 <div className="flex items-center justify-between">
-                  <span className="px-2.5 py-1 rounded-full text-xs font-bold bg-blue-500/10 text-blue-400 border border-blue-500/20">
+                  <span className="px-2.5 py-1 rounded-full text-xs font-bold bg-red-500/10 text-red-400 border border-red-500/20">
                     Aula {aula.grado} "{aula.seccion}"
                   </span>
                   <span className="text-[11px] font-mono text-slate-400">{aula.id}</span>
@@ -53,7 +53,7 @@ export const ClassroomManager: React.FC = () => {
                   </p>
                   <div className="flex items-center justify-between text-xs text-slate-400 pt-2 border-t border-slate-800">
                     <span className="flex items-center gap-1.5">
-                      <Users className="w-3.5 h-3.5 text-blue-400" />
+                      <Users className="w-3.5 h-3.5 text-red-400" />
                       {countAlumnos} alumnos
                     </span>
                     <span>Capacidad: {aula.capacidad} max</span>

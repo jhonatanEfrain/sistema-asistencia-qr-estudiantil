@@ -231,7 +231,7 @@ export const CommunicationCenter: React.FC = () => {
 
   return (
     <div className="space-y-6 pb-10 animate-fade-in">
-      <section className="overflow-hidden rounded-[2rem] bg-gradient-to-br from-blue-700 via-blue-800 to-indigo-950 p-6 text-white shadow-xl sm:p-8">
+      <section className="overflow-hidden rounded-[2rem] bg-gradient-to-br from-red-700 via-red-800 to-rose-950 p-6 text-white shadow-xl sm:p-8">
         <div className="flex flex-col justify-between gap-6 lg:flex-row lg:items-center">
           <div className="max-w-2xl space-y-3">
             <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-[0.16em]">
@@ -241,7 +241,7 @@ export const CommunicationCenter: React.FC = () => {
             <h2 className="text-2xl font-black tracking-tight sm:text-3xl">
               Comunicados y acompañamiento familiar
             </h2>
-            <p className="text-sm leading-6 text-blue-100">
+            <p className="text-sm leading-6 text-red-100">
               Toda la comunicación permanece dentro del sistema y respeta las aulas y estudiantes asociados a cada usuario.
             </p>
           </div>
@@ -249,11 +249,11 @@ export const CommunicationCenter: React.FC = () => {
           <div className="grid grid-cols-2 gap-3 sm:min-w-[310px]">
             <div className="rounded-2xl border border-white/15 bg-white/10 p-4 backdrop-blur">
               <p className="text-2xl font-black">{visibleAnnouncements.length}</p>
-              <p className="mt-1 text-[11px] font-semibold text-blue-100">Comunicados visibles</p>
+              <p className="mt-1 text-[11px] font-semibold text-red-100">Comunicados visibles</p>
             </div>
             <div className="rounded-2xl border border-white/15 bg-white/10 p-4 backdrop-blur">
               <p className="text-2xl font-black">{canChat ? chatContacts.length : usuarios.filter(u => u.rol === 'padre').length}</p>
-              <p className="mt-1 text-[11px] font-semibold text-blue-100">
+              <p className="mt-1 text-[11px] font-semibold text-red-100">
                 {canChat ? 'Conversaciones disponibles' : 'Familias destinatarias'}
               </p>
             </div>
@@ -269,7 +269,7 @@ export const CommunicationCenter: React.FC = () => {
               setActiveTab('comunicados');
             }}
             className={`flex items-center gap-2 rounded-xl px-4 py-2.5 text-xs font-extrabold transition ${
-              section === 'comunicados' ? 'bg-blue-600 text-white shadow-md' : 'text-slate-500 hover:bg-slate-50'
+              section === 'comunicados' ? 'bg-red-600 text-white shadow-md' : 'text-slate-500 hover:bg-slate-50'
             }`}
           >
             <Megaphone className="h-4 w-4" />
@@ -281,7 +281,7 @@ export const CommunicationCenter: React.FC = () => {
               setActiveTab('mensajes');
             }}
             className={`flex items-center gap-2 rounded-xl px-4 py-2.5 text-xs font-extrabold transition ${
-              section === 'chat' ? 'bg-blue-600 text-white shadow-md' : 'text-slate-500 hover:bg-slate-50'
+              section === 'chat' ? 'bg-red-600 text-white shadow-md' : 'text-slate-500 hover:bg-slate-50'
             }`}
           >
             <MessageCircle className="h-4 w-4" />
@@ -295,7 +295,7 @@ export const CommunicationCenter: React.FC = () => {
           {currentRole !== 'padre' && (
             <section className="h-fit rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
               <div className="mb-5 flex items-start gap-3">
-                <span className="rounded-2xl bg-blue-50 p-3 text-blue-600">
+                <span className="rounded-2xl bg-red-50 p-3 text-red-600">
                   <Megaphone className="h-5 w-5" />
                 </span>
                 <div>
@@ -309,7 +309,7 @@ export const CommunicationCenter: React.FC = () => {
               </div>
 
               <form onSubmit={handlePublish} className="space-y-4">
-                <div className="rounded-2xl border border-blue-100 bg-blue-50 p-3 text-xs text-blue-800">
+                <div className="rounded-2xl border border-red-100 bg-red-50 p-3 text-xs text-red-800">
                   <div className="flex items-center gap-2 font-extrabold">
                     {currentRole === 'admin' ? <School className="h-4 w-4" /> : <Building2 className="h-4 w-4" />}
                     Destinatarios
@@ -321,7 +321,7 @@ export const CommunicationCenter: React.FC = () => {
                       value={selectedAulaId}
                       onChange={event => setSelectedAulaId(event.target.value)}
                       required
-                      className="mt-2 w-full rounded-xl border border-blue-200 bg-white px-3 py-2 text-xs font-bold text-slate-700 outline-none"
+                      className="mt-2 w-full rounded-xl border border-red-200 bg-white px-3 py-2 text-xs font-bold text-slate-700 outline-none"
                     >
                       {teacherAulas.map(aula => (
                         <option key={aula.id} value={aula.id}>{classroomLabel(aula)}</option>
@@ -341,7 +341,7 @@ export const CommunicationCenter: React.FC = () => {
                     required
                     maxLength={120}
                     placeholder="Ej. Reunión de familias"
-                    className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-blue-400 focus:bg-white focus:ring-4 focus:ring-blue-100"
+                    className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-red-400 focus:bg-white focus:ring-4 focus:ring-red-100"
                   />
                 </div>
 
@@ -357,7 +357,7 @@ export const CommunicationCenter: React.FC = () => {
                     rows={6}
                     maxLength={1500}
                     placeholder="Escribe información clara, fecha, hora y recomendaciones..."
-                    className="w-full resize-none rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm leading-6 text-slate-900 outline-none transition focus:border-blue-400 focus:bg-white focus:ring-4 focus:ring-blue-100"
+                    className="w-full resize-none rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm leading-6 text-slate-900 outline-none transition focus:border-red-400 focus:bg-white focus:ring-4 focus:ring-red-100"
                   />
                   <p className="mt-1 text-right text-[10px] text-slate-400">{body.length}/1500</p>
                 </div>
@@ -375,7 +375,7 @@ export const CommunicationCenter: React.FC = () => {
                 <button
                   type="submit"
                   disabled={sending || !title.trim() || !body.trim()}
-                  className="flex w-full items-center justify-center gap-2 rounded-2xl bg-blue-600 px-4 py-3 text-xs font-extrabold text-white shadow-lg shadow-blue-600/20 transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
+                  className="flex w-full items-center justify-center gap-2 rounded-2xl bg-red-600 px-4 py-3 text-xs font-extrabold text-white shadow-lg shadow-red-600/20 transition hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   <Send className="h-4 w-4" />
                   {sending ? 'Publicando...' : 'Publicar en el sistema'}
@@ -410,12 +410,12 @@ export const CommunicationCenter: React.FC = () => {
                 </div>
               ) : (
                 visibleAnnouncements.map(announcement => (
-                  <article key={announcement.id} className="rounded-2xl border border-slate-200 bg-slate-50/70 p-4 transition hover:border-blue-200 hover:bg-blue-50/40 sm:p-5">
+                  <article key={announcement.id} className="rounded-2xl border border-slate-200 bg-slate-50/70 p-4 transition hover:border-red-200 hover:bg-red-50/40 sm:p-5">
                     <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-start">
                       <div className="flex min-w-0 gap-3">
                         <span className={`mt-0.5 rounded-xl p-2.5 ${
                           announcement.alcance === 'colegio'
-                            ? 'bg-indigo-100 text-indigo-700'
+                            ? 'bg-rose-100 text-rose-700'
                             : 'bg-amber-100 text-amber-700'
                         }`}>
                           {announcement.alcance === 'colegio'
@@ -430,7 +430,7 @@ export const CommunicationCenter: React.FC = () => {
                       <span className="shrink-0 text-[10px] font-semibold text-slate-400">{announcement.fecha}</span>
                     </div>
                     <div className="mt-4 flex flex-wrap items-center gap-2 border-t border-slate-200 pt-3 text-[10px]">
-                      <span className="rounded-full bg-white px-2.5 py-1 font-bold text-blue-700">
+                      <span className="rounded-full bg-white px-2.5 py-1 font-bold text-red-700">
                         Para: {announcement.aulaDestino}
                       </span>
                       <span className="text-slate-500">Publicado por {announcement.autor}</span>
@@ -468,12 +468,12 @@ export const CommunicationCenter: React.FC = () => {
                       key={contact.key}
                       onClick={() => setSelectedContactKey(contact.key)}
                       className={`w-full rounded-2xl p-3 text-left transition ${
-                        active ? 'bg-blue-600 text-white shadow-md' : 'hover:bg-white'
+                        active ? 'bg-red-600 text-white shadow-md' : 'hover:bg-white'
                       }`}
                     >
                       <div className="flex items-center gap-3">
                         <span className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${
-                          active ? 'bg-white/15' : 'bg-blue-100 text-blue-700'
+                          active ? 'bg-white/15' : 'bg-red-100 text-red-700'
                         }`}>
                           {currentRole === 'docente' ? <UserRound className="h-5 w-5" /> : <GraduationCap className="h-5 w-5" />}
                         </span>
@@ -482,11 +482,11 @@ export const CommunicationCenter: React.FC = () => {
                             <p className="truncate text-xs font-extrabold">{contact.counterpart.nombre}</p>
                             {unread > 0 && (
                               <span className={`flex h-5 min-w-5 items-center justify-center rounded-full px-1 text-[9px] font-black ${
-                                active ? 'bg-white text-blue-700' : 'bg-rose-500 text-white'
+                                active ? 'bg-white text-red-700' : 'bg-rose-500 text-white'
                               }`}>{unread}</span>
                             )}
                           </div>
-                          <p className={`mt-1 truncate text-[10px] ${active ? 'text-blue-100' : 'text-slate-500'}`}>
+                          <p className={`mt-1 truncate text-[10px] ${active ? 'text-red-100' : 'text-slate-500'}`}>
                             Por {contact.estudiante.nombres} · {classroomLabel(contact.aula)}
                           </p>
                         </div>
@@ -515,7 +515,7 @@ export const CommunicationCenter: React.FC = () => {
                 </header>
 
                 <div className="flex-1 space-y-3 overflow-y-auto bg-slate-50/70 p-5">
-                  <div className="mx-auto mb-5 flex max-w-md items-start gap-2 rounded-2xl border border-blue-100 bg-blue-50 p-3 text-[10px] leading-5 text-blue-800">
+                  <div className="mx-auto mb-5 flex max-w-md items-start gap-2 rounded-2xl border border-red-100 bg-red-50 p-3 text-[10px] leading-5 text-red-800">
                     <Info className="mt-0.5 h-4 w-4 shrink-0" />
                     Esta conversación solo es visible para el docente y el apoderado vinculados al estudiante.
                   </div>
@@ -533,12 +533,12 @@ export const CommunicationCenter: React.FC = () => {
                         <div key={message.id} className={`flex ${own ? 'justify-end' : 'justify-start'}`}>
                           <div className={`max-w-[85%] rounded-2xl px-4 py-3 text-xs leading-5 shadow-sm sm:max-w-[70%] ${
                             own
-                              ? 'rounded-br-md bg-blue-600 text-white'
+                              ? 'rounded-br-md bg-red-600 text-white'
                               : 'rounded-bl-md border border-slate-200 bg-white text-slate-700'
                           }`}>
                             <p className="whitespace-pre-wrap">{message.contenido}</p>
                             <div className={`mt-1.5 flex items-center justify-end gap-1 text-[9px] ${
-                              own ? 'text-blue-100' : 'text-slate-400'
+                              own ? 'text-red-100' : 'text-slate-400'
                             }`}>
                               <span>{message.fechaHora.split(' ')[1]?.slice(0, 5)}</span>
                               {own && message.leido && <CheckCircle2 className="h-3 w-3" />}
@@ -564,12 +564,12 @@ export const CommunicationCenter: React.FC = () => {
                       rows={2}
                       maxLength={1000}
                       placeholder="Escribe un mensaje privado..."
-                      className="min-h-[48px] flex-1 resize-none rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-xs leading-5 text-slate-900 outline-none focus:border-blue-400 focus:bg-white focus:ring-4 focus:ring-blue-100"
+                      className="min-h-[48px] flex-1 resize-none rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-xs leading-5 text-slate-900 outline-none focus:border-red-400 focus:bg-white focus:ring-4 focus:ring-red-100"
                     />
                     <button
                       type="submit"
                       disabled={sending || !chatText.trim()}
-                      className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-blue-600 text-white shadow-lg shadow-blue-600/20 transition hover:bg-blue-700 disabled:opacity-50"
+                      className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-red-600 text-white shadow-lg shadow-red-600/20 transition hover:bg-red-700 disabled:opacity-50"
                       title="Enviar mensaje"
                     >
                       <ArrowRight className="h-5 w-5" />

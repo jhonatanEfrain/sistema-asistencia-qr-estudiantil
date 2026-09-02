@@ -6,7 +6,6 @@ import {
   GraduationCap,
   Lock,
   Mail,
-  QrCode,
   ScanLine,
   ShieldCheck,
   Sparkles,
@@ -14,6 +13,7 @@ import {
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { Role } from '../types';
+import schoolCrest from '../assets/josdic-crest.png';
 
 const roles: Array<{
   id: Role;
@@ -89,19 +89,19 @@ export const LoginView: React.FC = () => {
 
           <div className="relative z-10 flex h-full flex-col justify-between gap-10 p-7 sm:p-10 lg:p-12">
             <div className="flex items-center gap-3">
-              <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white text-blue-700 shadow-lg shadow-blue-950/20">
-                <QrCode className="h-6 w-6" />
+              <span className="flex h-16 w-16 items-center justify-center rounded-2xl border border-white/20 bg-white/95 p-1 shadow-xl shadow-red-950/25">
+                <img src={schoolCrest} alt="Insignia de Servicios Educativos José Sabogal Diéguez" className="h-full w-full object-contain drop-shadow-sm" />
               </span>
               <div>
-                <p className="text-sm font-black tracking-tight">JOSDIC</p>
-                <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-blue-100">
-                  Asistencia QR
+                <p className="text-base font-black tracking-tight">JOSDIC</p>
+                <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-red-100">
+                  José Sabogal Diéguez
                 </p>
               </div>
             </div>
 
             <div className="max-w-sm space-y-5">
-              <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-[0.18em] text-blue-50 backdrop-blur">
+              <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-[0.18em] text-red-50 backdrop-blur">
                 <Sparkles className="h-3.5 w-3.5" />
                 Bienvenido
               </span>
@@ -109,7 +109,7 @@ export const LoginView: React.FC = () => {
                 <h1 className="text-3xl font-black leading-tight tracking-tight sm:text-4xl">
                   Control escolar más simple y seguro
                 </h1>
-                <p className="max-w-xs text-sm leading-6 text-blue-100/90">
+                <p className="max-w-xs text-sm leading-6 text-red-100/90">
                   Registra, consulta y supervisa la asistencia estudiantil desde un solo lugar.
                 </p>
               </div>
@@ -126,7 +126,7 @@ export const LoginView: React.FC = () => {
               </div>
             </div>
 
-            <p className="flex items-center gap-2 text-[11px] font-semibold text-blue-100/80">
+            <p className="flex items-center gap-2 text-[11px] font-semibold text-red-100/80">
               <CheckCircle2 className="h-4 w-4 text-emerald-300" />
               Plataforma institucional protegida
             </p>
@@ -137,7 +137,7 @@ export const LoginView: React.FC = () => {
           <div className="mx-auto w-full max-w-md">
             <div className="mb-7 flex items-start justify-between gap-4">
               <div>
-                <p className="mb-2 text-[11px] font-extrabold uppercase tracking-[0.2em] text-blue-600">
+                <p className="mb-2 text-[11px] font-extrabold uppercase tracking-[0.2em] text-red-600">
                   Acceso institucional
                 </p>
                 <h2 className="text-3xl font-black tracking-tight text-slate-950">
@@ -173,7 +173,7 @@ export const LoginView: React.FC = () => {
                       aria-pressed={isActive}
                       className={`flex min-w-0 items-center justify-center gap-1.5 rounded-xl px-2 py-2.5 text-[11px] font-extrabold transition-all sm:text-xs ${
                         isActive
-                          ? 'bg-white text-blue-700 shadow-sm'
+                          ? 'bg-white text-red-700 shadow-sm'
                           : 'text-slate-500 hover:bg-white/60 hover:text-slate-800'
                       }`}
                     >

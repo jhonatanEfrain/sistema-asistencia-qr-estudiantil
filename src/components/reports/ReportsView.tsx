@@ -68,7 +68,7 @@ export const ReportsView: React.FC = () => {
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
           <h2 className="text-xl font-bold text-white flex items-center gap-2">
-            <FileSpreadsheet className="w-6 h-6 text-indigo-400" />
+            <FileSpreadsheet className="w-6 h-6 text-rose-400" />
             Módulo de Reportes e Informes Consolidados
           </h2>
           <p className="text-xs text-slate-400">
@@ -87,7 +87,7 @@ export const ReportsView: React.FC = () => {
 
           <button
             onClick={handleExportPDF}
-            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs shadow-md transition-all"
+            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold text-xs shadow-md transition-all"
           >
             <Printer className="w-4 h-4" />
             <span>Exportar PDF Oficial</span>
@@ -110,7 +110,7 @@ export const ReportsView: React.FC = () => {
             onClick={() => setReportType(tab.id)}
             className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all ${
               reportType === tab.id
-                ? 'bg-indigo-600 text-white shadow-md'
+                ? 'bg-rose-600 text-white shadow-md'
                 : 'bg-slate-900 text-slate-400 hover:bg-slate-800 border border-slate-800'
             }`}
           >

@@ -46,7 +46,7 @@ export const ParentManager: React.FC = () => {
               </div>
 
               <div className="p-3 bg-slate-950 rounded-2xl border border-slate-800 text-xs space-y-1">
-                <p className="font-bold text-blue-400 flex items-center gap-1.5">
+                <p className="font-bold text-red-400 flex items-center gap-1.5">
                   <User className="w-3.5 h-3.5" />
                   <span>Estudiante Asoc: {hijo ? `${hijo.nombres} ${hijo.apellidos}` : 'No Asignado'}</span>
                 </p>

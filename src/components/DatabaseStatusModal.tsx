@@ -64,7 +64,7 @@ DB_NAME=asistencia_qr_db`;
         {/* Header */}
         <div className="px-6 py-4 bg-slate-800/80 border-b border-slate-700/60 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="p-2.5 bg-blue-500/20 text-blue-400 rounded-xl">
+            <div className="p-2.5 bg-red-500/20 text-red-400 rounded-xl">
               <Database className="w-6 h-6" />
             </div>
             <div>
@@ -131,7 +131,7 @@ DB_NAME=asistencia_qr_db`;
               disabled={loading}
               className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-semibold flex items-center gap-2 transition-colors shrink-0"
             >
-              <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin text-blue-400' : ''}`} />
+              <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin text-red-400' : ''}`} />
               Recomprobar
             </button>
           </div>
@@ -139,7 +139,7 @@ DB_NAME=asistencia_qr_db`;
           {/* Pasos para conectar MySQL */}
           <div className="space-y-4">
             <h4 className="font-bold text-slate-200 text-sm flex items-center gap-2">
-              <Server className="w-4 h-4 text-blue-400" />
+              <Server className="w-4 h-4 text-red-400" />
               Pasos para conectar tu MySQL local (XAMPP / WAMP / Workbench / Docker)
             </h4>
 
@@ -171,17 +171,17 @@ DB_NAME=asistencia_qr_db`;
               <li>
                 <strong className="text-white">Iniciar el servidor:</strong>
                 <p className="mt-1 ml-5 text-slate-400">
-                  Ejecuta en tu consola: <code className="bg-slate-800 text-blue-400 px-1.5 py-0.5 rounded">npm run dev</code>
+                  Ejecuta en tu consola: <code className="bg-slate-800 text-red-400 px-1.5 py-0.5 rounded">npm run dev</code>
                 </p>
               </li>
             </ol>
           </div>
 
-          <div className="bg-blue-950/30 border border-blue-900/40 p-4 rounded-xl flex items-start gap-3 text-xs text-blue-200">
-            <AlertCircle className="w-5 h-5 text-blue-400 shrink-0 mt-0.5" />
+          <div className="bg-red-950/30 border border-red-900/40 p-4 rounded-xl flex items-start gap-3 text-xs text-red-200">
+            <AlertCircle className="w-5 h-5 text-red-400 shrink-0 mt-0.5" />
             <div>
               <span className="font-bold">Modo Híbrido Automático:</span>
-              <p className="mt-0.5 text-blue-300/80">
+              <p className="mt-0.5 text-red-300/80">
                 Si MySQL está desactivado o no disponible temporalmente, el sistema funcionará automáticamente en modo local (localStorage) para que nunca dejes de trabajar.
               </p>
             </div>
@@ -201,7 +201,7 @@ DB_NAME=asistencia_qr_db`;
 
           <button
             onClick={onClose}
-            className="px-5 py-2 bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-xl text-xs transition-colors shadow-sm"
+            className="px-5 py-2 bg-red-600 hover:bg-red-500 text-white font-semibold rounded-xl text-xs transition-colors shadow-sm"
           >
             Entendido
           </button>

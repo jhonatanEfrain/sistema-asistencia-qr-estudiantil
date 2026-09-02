@@ -104,7 +104,7 @@ export const TeacherPortal: React.FC = () => {
           ) : (
             <button
               onClick={() => setActiveTab('docente_aulas')}
-              className="flex items-center gap-2 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs shadow-md transition-all"
+              className="flex items-center gap-2 px-4 py-2 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold text-xs shadow-md transition-all"
             >
               <Building2 className="w-4 h-4" />
               <span>Ver Mis Aulas y Alumnos</span>
@@ -242,7 +242,7 @@ export const TeacherPortal: React.FC = () => {
                   onClick={() => setSelectedAulaId(aId)}
                   className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
                     isSelected
-                      ? 'bg-blue-600 text-white shadow-md'
+                      ? 'bg-red-600 text-white shadow-md'
                       : 'bg-slate-900 text-slate-300 hover:bg-slate-800 border border-slate-800'
                   }`}
                 >
@@ -308,7 +308,7 @@ export const TeacherPortal: React.FC = () => {
 
                       return (
                         <tr key={st.id} className="hover:bg-slate-800/40 transition-colors">
-                          <td className="py-3 px-3 font-bold text-blue-400">#{st.numeroOrden}</td>
+                          <td className="py-3 px-3 font-bold text-red-400">#{st.numeroOrden}</td>
                           <td className="py-3 px-3 font-bold text-white">{st.apellidos}, {st.nombres}</td>
                           <td className="py-3 px-3 text-slate-400 font-mono">{st.dni}</td>
                           <td className="py-3 px-3 font-mono font-bold text-emerald-400">
@@ -350,7 +350,7 @@ export const TeacherPortal: React.FC = () => {
                                     observacion: 'Registro manual por docente'
                                   });
                                 }}
-                                className="px-2.5 py-1 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-[10px] font-bold"
+                                className="px-2.5 py-1 bg-red-600 hover:bg-red-500 text-white rounded-lg text-[10px] font-bold"
                               >
                                 + Marcar Presente
                               </button>

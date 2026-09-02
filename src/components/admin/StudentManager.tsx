@@ -175,7 +175,7 @@ export const StudentManager: React.FC = () => {
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
           <h2 className="text-xl font-bold text-white flex items-center gap-2">
-            <Users className="w-6 h-6 text-blue-400" />
+            <Users className="w-6 h-6 text-red-400" />
             Gestión de Estudiantes
           </h2>
           <p className="text-xs text-slate-400">
@@ -214,7 +214,7 @@ export const StudentManager: React.FC = () => {
           {/* Exportar Carnets QR a PDF */}
           <button
             onClick={() => generateStudentQRCardsPDF(filteredStudents)}
-            className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs shadow-sm transition-colors"
+            className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-semibold text-xs shadow-sm transition-colors"
             title="Imprimir Carnets con Código QR para los estudiantes filtrados"
           >
             <Printer className="w-4 h-4" />
@@ -224,7 +224,7 @@ export const StudentManager: React.FC = () => {
           {/* Nuevo Estudiante */}
           <button
             onClick={() => setIsAddModalOpen(true)}
-            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs shadow-md transition-all"
+            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold text-xs shadow-md transition-all"
           >
             <UserPlus className="w-4 h-4" />
             <span>+ Nuevo Estudiante</span>
@@ -241,7 +241,7 @@ export const StudentManager: React.FC = () => {
             placeholder="Buscar por Apellidos, Nombres, DNI o ID..."
             value={searchTerm}
             onChange={e => setSearchTerm(e.target.value)}
-            className="w-full pl-9 pr-4 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:border-blue-500"
+            className="w-full pl-9 pr-4 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:border-red-500"
           />
         </div>
 
@@ -256,7 +256,7 @@ export const StudentManager: React.FC = () => {
                 setSelectedGrado('Todos');
               }
             }}
-            className="px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-slate-300 focus:outline-none focus:border-blue-500"
+            className="px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-slate-300 focus:outline-none focus:border-red-500"
           >
             <option value="Todos">Todos los Niveles</option>
             <option value="Primaria">Primaria (1.°-6.°)</option>
@@ -267,7 +267,7 @@ export const StudentManager: React.FC = () => {
           <select
             value={selectedGrado}
             onChange={e => setSelectedGrado(e.target.value)}
-            className="px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-slate-300 focus:outline-none focus:border-blue-500"
+            className="px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-slate-300 focus:outline-none focus:border-red-500"
           >
             <option value="Todos">Todos los Grados</option>
             <option value="1.°">1.° Grado</option>
@@ -309,7 +309,7 @@ export const StudentManager: React.FC = () => {
               ) : (
                 filteredStudents.map(st => (
                   <tr key={st.id} className="hover:bg-slate-800/40 transition-colors">
-                    <td className="py-3 px-4 font-mono font-bold text-blue-400">
+                    <td className="py-3 px-4 font-mono font-bold text-red-400">
                       #{st.numeroOrden} ({st.id})
                     </td>
                     <td className="py-3 px-4 font-bold text-white">
@@ -390,7 +390,7 @@ export const StudentManager: React.FC = () => {
                     required
                     value={formData.apellidos}
                     onChange={e => setFormData({ ...formData, apellidos: e.target.value })}
-                    className="w-full p-2.5 bg-slate-950 border border-slate-800 rounded-xl text-white focus:outline-none focus:border-blue-500"
+                    className="w-full p-2.5 bg-slate-950 border border-slate-800 rounded-xl text-white focus:outline-none focus:border-red-500"
                     placeholder="Ej. Perez Garcia"
                   />
                 </div>
@@ -401,7 +401,7 @@ export const StudentManager: React.FC = () => {
                     required
                     value={formData.nombres}
                     onChange={e => setFormData({ ...formData, nombres: e.target.value })}
-                    className="w-full p-2.5 bg-slate-950 border border-slate-800 rounded-xl text-white focus:outline-none focus:border-blue-500"
+                    className="w-full p-2.5 bg-slate-950 border border-slate-800 rounded-xl text-white focus:outline-none focus:border-red-500"
                     placeholder="Ej. Juan Carlos"
                   />
                 </div>
@@ -416,7 +416,7 @@ export const StudentManager: React.FC = () => {
                     maxLength={8}
                     value={formData.dni}
                     onChange={e => setFormData({ ...formData, dni: e.target.value })}
-                    className="w-full p-2.5 bg-slate-950 border border-slate-800 rounded-xl text-white font-mono focus:outline-none focus:border-blue-500"
+                    className="w-full p-2.5 bg-slate-950 border border-slate-800 rounded-xl text-white font-mono focus:outline-none focus:border-red-500"
                     placeholder="70001001"
                   />
                 </div>
@@ -432,7 +432,7 @@ export const StudentManager: React.FC = () => {
                         grado: (newNivel === 'Secundaria' && prev.grado === '6.°') ? '1.°' : prev.grado
                       }));
                     }}
-                    className="w-full p-2.5 bg-slate-950 border border-slate-800 rounded-xl text-white focus:outline-none focus:border-blue-500"
+                    className="w-full p-2.5 bg-slate-950 border border-slate-800 rounded-xl text-white focus:outline-none focus:border-red-500"
                   >
                     <option value="Primaria">Primaria</option>
                     <option value="Secundaria">Secundaria</option>
@@ -444,7 +444,7 @@ export const StudentManager: React.FC = () => {
                     <select
                       value={formData.grado}
                       onChange={e => setFormData({ ...formData, grado: e.target.value })}
-                      className="w-full p-2.5 bg-slate-950 border border-slate-800 rounded-xl text-white focus:outline-none focus:border-blue-500"
+                      className="w-full p-2.5 bg-slate-950 border border-slate-800 rounded-xl text-white focus:outline-none focus:border-red-500"
                     >
                       <option value="1.°">1.°</option>
                       <option value="2.°">2.°</option>
@@ -456,7 +456,7 @@ export const StudentManager: React.FC = () => {
                     <select
                       value={formData.seccion}
                       onChange={e => setFormData({ ...formData, seccion: e.target.value })}
-                      className="w-full p-2.5 bg-slate-950 border border-slate-800 rounded-xl text-white focus:outline-none focus:border-blue-500"
+                      className="w-full p-2.5 bg-slate-950 border border-slate-800 rounded-xl text-white focus:outline-none focus:border-red-500"
                     >
                       <option value="A">A</option>
                       <option value="B">B</option>
@@ -475,7 +475,7 @@ export const StudentManager: React.FC = () => {
                       required
                       value={formData.nombreApoderado}
                       onChange={e => setFormData({ ...formData, nombreApoderado: e.target.value })}
-                      className="w-full p-2.5 bg-slate-950 border border-slate-800 rounded-xl text-white focus:outline-none focus:border-blue-500"
+                      className="w-full p-2.5 bg-slate-950 border border-slate-800 rounded-xl text-white focus:outline-none focus:border-red-500"
                       placeholder="Ej. Maria Flores Quispe"
                     />
                   </div>
@@ -486,7 +486,7 @@ export const StudentManager: React.FC = () => {
                       required
                       value={formData.telefonoApoderado}
                       onChange={e => setFormData({ ...formData, telefonoApoderado: e.target.value })}
-                      className="w-full p-2.5 bg-slate-950 border border-slate-800 rounded-xl text-white focus:outline-none focus:border-blue-500"
+                      className="w-full p-2.5 bg-slate-950 border border-slate-800 rounded-xl text-white focus:outline-none focus:border-red-500"
                       placeholder="+51 987654321"
                     />
                   </div>
@@ -496,7 +496,7 @@ export const StudentManager: React.FC = () => {
                       type="email"
                       value={formData.correoApoderado}
                       onChange={e => setFormData({ ...formData, correoApoderado: e.target.value })}
-                      className="w-full p-2.5 bg-slate-950 border border-slate-800 rounded-xl text-white focus:outline-none focus:border-blue-500"
+                      className="w-full p-2.5 bg-slate-950 border border-slate-800 rounded-xl text-white focus:outline-none focus:border-red-500"
                       placeholder="apoderado@gmail.com"
                     />
                   </div>
@@ -516,7 +516,7 @@ export const StudentManager: React.FC = () => {
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold shadow-md"
+                  className="px-5 py-2 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold shadow-md"
                 >
                   {editingStudent ? 'Actualizar Estudiante' : 'Guardar y Generar QR'}
                 </button>

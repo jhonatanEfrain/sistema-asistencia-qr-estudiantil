@@ -83,7 +83,7 @@ const MainAppContent: React.FC = () => {
   };
 
   return (
-    <div className={`app-shell min-h-screen font-sans selection:bg-blue-600 selection:text-white transition-colors duration-200 ${
+    <div className={`app-shell min-h-screen font-sans selection:bg-red-600 selection:text-white transition-colors duration-200 ${
       theme === 'light' ? 'theme-light text-slate-900' : 'theme-dark text-slate-100'
     }`}>
       <div className="app-frame min-h-screen flex flex-col overflow-hidden">

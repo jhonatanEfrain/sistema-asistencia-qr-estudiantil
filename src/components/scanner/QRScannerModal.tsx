@@ -180,7 +180,7 @@ export const QRScannerModal: React.FC<QRScannerModalProps> = ({ isOpen, onClose 
             onClick={() => setActiveTab('camera')}
             className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition-all ${
               activeTab === 'camera'
-                ? 'bg-blue-600 text-white shadow-md shadow-blue-500/20'
+                ? 'bg-red-600 text-white shadow-md shadow-red-500/20'
                 : 'text-slate-400 hover:bg-slate-800 hover:text-slate-200'
             }`}
           >
@@ -192,7 +192,7 @@ export const QRScannerModal: React.FC<QRScannerModalProps> = ({ isOpen, onClose 
             onClick={() => setActiveTab('simulator')}
             className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition-all ${
               activeTab === 'simulator'
-                ? 'bg-blue-600 text-white shadow-md shadow-blue-500/20'
+                ? 'bg-red-600 text-white shadow-md shadow-red-500/20'
                 : 'text-slate-400 hover:bg-slate-800 hover:text-slate-200'
             }`}
           >
@@ -257,7 +257,7 @@ export const QRScannerModal: React.FC<QRScannerModalProps> = ({ isOpen, onClose 
                   </p>
                   <button
                     onClick={() => setActiveTab('simulator')}
-                    className="px-4 py-2 rounded-xl bg-blue-600 text-white font-semibold text-xs hover:bg-blue-500"
+                    className="px-4 py-2 rounded-xl bg-red-600 text-white font-semibold text-xs hover:bg-red-500"
                   >
                     Usar Simulador Rápido QR
                   </button>
@@ -283,7 +283,7 @@ export const QRScannerModal: React.FC<QRScannerModalProps> = ({ isOpen, onClose 
                   placeholder="Buscar estudiante por DNI, Nombre o Grado..."
                   value={searchFilter}
                   onChange={e => setSearchFilter(e.target.value)}
-                  className="w-full pl-9 pr-4 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:border-blue-500"
+                  className="w-full pl-9 pr-4 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:border-red-500"
                 />
               </div>
 

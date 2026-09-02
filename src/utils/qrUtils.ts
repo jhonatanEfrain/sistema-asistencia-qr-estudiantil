@@ -9,7 +9,7 @@ export async function generateQRCodeDataUrl(text: string): Promise<string> {
       width: 300,
       margin: 2,
       color: {
-        dark: '#1e293b',
+        dark: '#5f111d',
         light: '#ffffff',
       },
       errorCorrectionLevel: 'H'
@@ -31,7 +31,7 @@ export async function generateQRCodeSVG(text: string): Promise<string> {
       width: 200,
       margin: 1,
       color: {
-        dark: '#0f172a',
+        dark: '#2d0a10',
         light: '#ffffff'
       }
     });

@@ -15,6 +15,7 @@ import {
   ChevronRight,
   BookOpen
 } from 'lucide-react';
+import schoolCrest from '../assets/josdic-crest.png';
 
 interface SidebarProps {
   isOpen: boolean;
@@ -88,7 +89,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
         }`}
       >
         <div className="px-5 pt-6 pb-3 hidden md:block">
-          <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-blue-200/60">Espacio de trabajo</p>
+          <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-red-200/60">Espacio de trabajo</p>
           <p className="text-sm font-bold text-white capitalize mt-1">Panel {currentRole}</p>
         </div>
 
@@ -103,7 +104,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
             return (
               <React.Fragment key={item.id}>
                 {showCategoryHeader && (
-                  <p className="px-3 pt-4 pb-1.5 text-[9px] font-bold uppercase tracking-[0.18em] text-blue-100/65">
+                  <p className="px-3 pt-4 pb-1.5 text-[9px] font-bold uppercase tracking-[0.18em] text-red-100/65">
                     {item.category}
                   </p>
                 )}
@@ -111,13 +112,13 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
                   onClick={() => handleTabClick(item.id)}
                   className={`w-full flex items-center justify-between px-3.5 py-3 rounded-2xl text-xs font-medium transition-all duration-200 ${
                     isActive
-                      ? 'bg-white text-blue-700 font-bold shadow-lg shadow-blue-950/15'
-                      : 'text-blue-50/75 hover:bg-white/10 hover:text-white'
+                      ? 'bg-white text-red-700 font-bold shadow-lg shadow-red-950/15'
+                      : 'text-red-50/75 hover:bg-white/10 hover:text-white'
                   }`}
                   id={`nav-item-${item.id}`}
                 >
                   <div className="flex items-center gap-3">
-                    <Icon className={`w-4 h-4 ${isActive ? 'text-blue-600' : 'text-blue-200/70'}`} />
+                    <Icon className={`w-4 h-4 ${isActive ? 'text-red-600' : 'text-red-200/70'}`} />
                     <span>{item.label}</span>
                   </div>
                   {isActive && <ChevronRight className="w-3.5 h-3.5" />}
@@ -128,10 +129,15 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
         </div>
 
         {/* Footer info inside sidebar */}
-        <div className="m-3 p-3.5 rounded-2xl bg-white/8 text-[10px] text-blue-100/70">
-          <div className="flex items-center justify-between">
-            <span>José Sabogal Diéguez (Josdic)</span>
-            <span className="text-emerald-400 font-semibold">v1.0 QR</span>
+        <div className="m-3 p-3 rounded-2xl border border-white/10 bg-white/8 text-[10px] text-red-100/80">
+          <div className="flex items-center gap-2.5">
+            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white/95 p-0.5 shadow-lg shadow-black/10">
+              <img src={schoolCrest} alt="Insignia JOSDIC" className="h-full w-full object-contain" />
+            </span>
+            <div className="min-w-0">
+              <p className="truncate font-extrabold text-white">José Sabogal Diéguez</p>
+              <p className="mt-0.5 text-red-100/60">Sistema institucional · v1.0</p>
+            </div>
           </div>
         </div>
       </aside>

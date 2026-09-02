@@ -72,7 +72,7 @@ export const ParentPortal: React.FC = () => {
   return (
     <div className="space-y-6 pb-10 animate-fade-in">
       {/* Banner del Apoderado */}
-      <div className="bg-gradient-to-r from-slate-900 via-blue-950 to-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+      <div className="bg-gradient-to-r from-slate-900 via-red-950 to-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div className="space-y-1">
           <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-amber-500/10 text-amber-400 border border-amber-500/20">
             Portal del Padre de Familia
@@ -99,7 +99,7 @@ export const ParentPortal: React.FC = () => {
           ) : (
             <button
               onClick={() => setActiveTab('padre_hijo')}
-              className="flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs shadow-md transition-all"
+              className="flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-red-600 hover:bg-red-500 text-white font-bold text-xs shadow-md transition-all"
             >
               <Users className="w-4 h-4" />
               <span>Ver Asistencia del Hijo(a)</span>
@@ -161,7 +161,7 @@ export const ParentPortal: React.FC = () => {
           {/* Notificaciones específicas del Hijo(a) */}
           <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 space-y-4">
             <h3 className="text-sm font-bold text-white flex items-center gap-2 border-b border-slate-800 pb-3">
-              <Bell className="w-4 h-4 text-blue-400" />
+              <Bell className="w-4 h-4 text-red-400" />
               Notificaciones Exclusivas de {child.nombres}
             </h3>
 
@@ -173,7 +173,7 @@ export const ParentPortal: React.FC = () => {
               ) : (
                 childNotifs.map(n => (
                   <div key={n.id} className="p-3 bg-slate-950 rounded-2xl border border-slate-800 space-y-1">
-                    <div className="flex items-center justify-between text-[10px] font-bold text-blue-400">
+                    <div className="flex items-center justify-between text-[10px] font-bold text-red-400">
                       <span>{n.titulo}</span>
                       <span className="text-slate-500 font-mono">{n.fechaHora}</span>
                     </div>
@@ -199,7 +199,7 @@ export const ParentPortal: React.FC = () => {
                 <img
                   src={child.fotoUrl || 'https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&q=80&w=200'}
                   alt={child.nombres}
-                  className="w-14 h-14 rounded-2xl object-cover ring-2 ring-blue-500/30"
+                  className="w-14 h-14 rounded-2xl object-cover ring-2 ring-red-500/30"
                 />
                 <div>
                   <h3 className="text-sm font-bold text-white">{child.nombres} {child.apellidos}</h3>
@@ -221,7 +221,7 @@ export const ParentPortal: React.FC = () => {
             <div className="md:col-span-2 p-5 bg-slate-900 border border-slate-800 rounded-3xl space-y-3 flex flex-col justify-between">
               <div className="flex items-center justify-between border-b border-slate-800 pb-2">
                 <span className="text-xs font-bold text-slate-300 flex items-center gap-2">
-                  <Calendar className="w-4 h-4 text-blue-400" />
+                  <Calendar className="w-4 h-4 text-red-400" />
                   Estado de Asistencia para Hoy ({todayStr})
                 </span>
                 <span className="text-[10px] font-bold bg-emerald-500/10 text-emerald-400 px-2.5 py-0.5 rounded-full border border-emerald-500/20">

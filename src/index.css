@@ -3,9 +3,25 @@
 
 @theme {
   --font-sans: "Manrope Variable", Manrope, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --color-red-50: #fff6f5;
+  --color-red-100: #ffe4e3;
+  --color-red-200: #fecaca;
+  --color-red-300: #fca5a5;
+  --color-red-400: #ef5b63;
+  --color-red-500: #d82d3f;
+  --color-red-600: #b91c2e;
+  --color-red-700: #981b2c;
+  --color-red-800: #7d1827;
+  --color-red-900: #651421;
+  --color-red-950: #3d0810;
 }
 
 :root {
+  --josdic-red: #b91c2e;
+  --josdic-wine: #651421;
+  --josdic-deep-wine: #3d0810;
+  --josdic-gold: #d6a32a;
+  --josdic-cream: #fff9f2;
   font-family: "Manrope Variable", Manrope, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -16,7 +32,7 @@
 }
 
 html {
-  background: #f5f7fb;
+  background: #faf7f6;
 }
 
 body {
@@ -32,9 +48,9 @@ body {
 
 .login-shell {
   background:
-    radial-gradient(circle at 12% 16%, rgba(172, 193, 255, 0.34), transparent 28rem),
-    radial-gradient(circle at 88% 86%, rgba(18, 46, 122, 0.45), transparent 32rem),
-    linear-gradient(145deg, #5873c1 0%, #3f5baa 52%, #2c4388 100%);
+    radial-gradient(circle at 12% 16%, rgba(255, 213, 208, 0.34), transparent 28rem),
+    radial-gradient(circle at 88% 86%, rgba(77, 8, 19, 0.52), transparent 32rem),
+    linear-gradient(145deg, #c63a49 0%, #981b2c 52%, #5a101d 100%);
 }
 
 .login-panel {
@@ -44,14 +60,14 @@ body {
   grid-template-columns: minmax(0, 0.92fr) minmax(440px, 1.08fr);
   border: 1px solid rgba(255, 255, 255, 0.72);
   border-radius: 2.25rem;
-  box-shadow: 0 34px 90px rgba(14, 29, 77, 0.32);
+  box-shadow: 0 34px 90px rgba(74, 11, 22, 0.34);
 }
 
 .login-welcome-panel {
   min-height: 100%;
   background:
     linear-gradient(145deg, rgba(255, 255, 255, 0.08), transparent 48%),
-    linear-gradient(160deg, #4265c5 0%, #2852ae 56%, #173b86 100%);
+    linear-gradient(160deg, #c52b3e 0%, #981b2c 56%, #5f111f 100%);
 }
 
 .login-welcome-cut {
@@ -68,8 +84,8 @@ body {
 .login-orb {
   position: absolute;
   border-radius: 50%;
-  background: linear-gradient(145deg, rgba(132, 164, 255, 0.75), rgba(22, 67, 163, 0.88));
-  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.28), 0 24px 45px rgba(12, 35, 100, 0.2);
+  background: linear-gradient(145deg, rgba(238, 91, 102, 0.78), rgba(101, 20, 33, 0.92));
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.28), 0 24px 45px rgba(61, 8, 16, 0.24);
 }
 
 .login-orb-one {
@@ -152,20 +168,20 @@ body {
 }
 
 .login-input:focus {
-  border-color: #4f6fd0;
+  border-color: #b91c2e;
   background: #fff;
-  box-shadow: 0 0 0 4px rgba(79, 111, 208, 0.12);
+  box-shadow: 0 0 0 4px rgba(185, 28, 46, 0.12);
 }
 
 .login-submit {
-  background: linear-gradient(135deg, #496bd0 0%, #2b55bb 100%);
-  box-shadow: 0 14px 28px rgba(43, 85, 187, 0.24);
+  background: linear-gradient(135deg, #c52b3e 0%, #8f1729 100%);
+  box-shadow: 0 14px 28px rgba(143, 23, 41, 0.25);
 }
 
 .login-submit:hover:not(:disabled) {
   transform: translateY(-1px);
-  background: linear-gradient(135deg, #3e60c4 0%, #2149a7 100%);
-  box-shadow: 0 17px 34px rgba(43, 85, 187, 0.3);
+  background: linear-gradient(135deg, #ad2033 0%, #701321 100%);
+  box-shadow: 0 17px 34px rgba(112, 19, 33, 0.32);
 }
 
 @media (max-width: 860px) {
@@ -219,7 +235,7 @@ textarea {
 }
 
 .app-shell {
-  background: #f5f7fb;
+  background: #faf7f6;
   padding: 0;
   font-family: "Manrope Variable", Manrope, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
   font-weight: 500;
@@ -372,7 +388,7 @@ textarea {
 .app-frame {
   width: 100%;
   min-height: 100vh;
-  background: #f5f7fb;
+  background: #faf7f6;
 }
 
 .app-navbar {
@@ -381,22 +397,22 @@ textarea {
 }
 
 .app-sidebar {
-  background: linear-gradient(180deg, #173f7a 0%, #123568 58%, #0e2b59 100%) !important;
+  background: linear-gradient(180deg, #941a2b 0%, #711421 58%, #4a0c16 100%) !important;
   border-right: 0 !important;
   box-shadow: inset -1px 0 rgba(255, 255, 255, 0.08);
 }
 
 .app-content {
   background:
-    radial-gradient(circle at 72% 0%, rgba(51, 104, 219, 0.07), transparent 26rem),
-    #f5f7fb;
+    radial-gradient(circle at 72% 0%, rgba(185, 28, 46, 0.07), transparent 26rem),
+    #faf7f6;
 }
 
 .theme-dark .app-frame,
 .theme-dark .app-content {
   background:
-    radial-gradient(circle at 70% 0%, rgba(66, 91, 175, 0.12), transparent 24rem),
-    #0b1220;
+    radial-gradient(circle at 70% 0%, rgba(185, 28, 46, 0.14), transparent 24rem),
+    #160b0e;
 }
 
 .theme-dark .quick-scan-card {
@@ -422,9 +438,9 @@ textarea {
 .dashboard-hero {
   background:
     radial-gradient(circle at 82% 18%, rgba(255, 255, 255, 0.18), transparent 13rem),
-    linear-gradient(120deg, #1f57bd 0%, #3269d2 55%, #4d7be0 100%);
+    linear-gradient(120deg, #861525 0%, #b91c2e 55%, #d33d4e 100%);
   border-color: rgba(255, 255, 255, 0.2) !important;
-  box-shadow: 0 20px 45px rgba(48, 73, 153, 0.2);
+  box-shadow: 0 20px 45px rgba(112, 19, 33, 0.22);
 }
 
 .dashboard-hero-image {
@@ -440,27 +456,27 @@ textarea {
 .dashboard-hero-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, #1f57bd 0%, rgba(31, 87, 189, 0.97) 38%, rgba(31, 87, 189, 0.4) 70%, rgba(31, 87, 189, 0.08) 100%);
+  background: linear-gradient(90deg, #7d1827 0%, rgba(152, 27, 44, 0.97) 38%, rgba(185, 28, 46, 0.46) 70%, rgba(185, 28, 46, 0.08) 100%);
 }
 
 .shortcut-card {
   min-height: 142px;
-  box-shadow: 0 16px 34px rgba(44, 70, 155, 0.18);
+  box-shadow: 0 16px 34px rgba(112, 19, 33, 0.18);
 }
 
 .shortcut-card:hover {
-  box-shadow: 0 22px 44px rgba(44, 70, 155, 0.25);
+  box-shadow: 0 22px 44px rgba(112, 19, 33, 0.25);
 }
 
 .quick-scan-card {
-  border-color: #e3e8f3 !important;
-  box-shadow: 0 12px 32px rgba(42, 61, 110, 0.07);
+  border-color: #f0dedf !important;
+  box-shadow: 0 12px 32px rgba(91, 31, 41, 0.07);
 }
 
 .metric-card:hover {
   transform: translateY(-3px);
-  border-color: #cdd7f1 !important;
-  box-shadow: 0 16px 36px rgba(42, 61, 110, 0.11) !important;
+  border-color: #e7c5c8 !important;
+  box-shadow: 0 16px 36px rgba(91, 31, 41, 0.11) !important;
 }
 
 .theme-light .app-content .bg-slate-900 {
@@ -477,17 +493,17 @@ textarea {
   color: #ffffff !important;
 }
 
-.theme-light .dashboard-hero .text-blue-100\/85,
-.theme-light .dashboard-hero .text-blue-100\/90 {
-  color: rgba(239, 246, 255, 0.9) !important;
+.theme-light .dashboard-hero .text-red-100\/85,
+.theme-light .dashboard-hero .text-red-100\/90 {
+  color: rgba(255, 244, 242, 0.92) !important;
 }
 
 .theme-light .app-sidebar button:not(.bg-white) {
-  color: rgba(239, 246, 255, 0.82) !important;
+  color: rgba(255, 241, 239, 0.84) !important;
 }
 
 .theme-light .app-sidebar button.bg-white {
-  color: #1d4ed8 !important;
+  color: #981b2c !important;
 }
 
 .theme-light .app-content .rounded-2xl,
@@ -515,14 +531,14 @@ textarea {
 }
 
 .theme-light .app-content tbody tr:hover {
-  background-color: #f3f6ff !important;
+  background-color: #fff4f3 !important;
 }
 
 .theme-light .app-content input:focus,
 .theme-light .app-content select:focus,
 .theme-light .app-content textarea:focus {
-  border-color: #5373d8 !important;
-  box-shadow: 0 0 0 3px rgba(83, 115, 216, 0.13);
+  border-color: #b91c2e !important;
+  box-shadow: 0 0 0 3px rgba(185, 28, 46, 0.13);
 }
 
 @media (max-width: 767px) {
@@ -536,7 +552,7 @@ textarea {
   }
 
   .dashboard-hero-overlay {
-    background: linear-gradient(90deg, rgba(54, 80, 162, 0.98), rgba(54, 80, 162, 0.8));
+    background: linear-gradient(90deg, rgba(125, 24, 39, 0.98), rgba(152, 27, 44, 0.84));
   }
 
   .app-content h1 {
@@ -619,12 +635,12 @@ textarea {
 }
 
 /* CRITICAL: Keep crisp white text on solid colored buttons & badges */
-.theme-light .bg-blue-600,
-.theme-light .bg-blue-500,
+.theme-light .bg-red-600,
+.theme-light .bg-red-500,
 .theme-light .bg-emerald-600,
 .theme-light .bg-emerald-500,
 .theme-light .bg-red-600,
-.theme-light .bg-indigo-600,
+.theme-light .bg-rose-600,
 .theme-light .bg-amber-600,
 .theme-light .bg-purple-600,
 .theme-light .bg-rose-600,
@@ -633,12 +649,12 @@ textarea {
   color: #ffffff !important;
 }
 
-.theme-light .bg-blue-600 *,
-.theme-light .bg-blue-500 *,
+.theme-light .bg-red-600 *,
+.theme-light .bg-red-500 *,
 .theme-light .bg-emerald-600 *,
 .theme-light .bg-emerald-500 *,
 .theme-light .bg-red-600 *,
-.theme-light .bg-indigo-600 *,
+.theme-light .bg-rose-600 *,
 .theme-light .bg-amber-600 *,
 .theme-light .bg-purple-600 *,
 .theme-light .bg-rose-600 *,

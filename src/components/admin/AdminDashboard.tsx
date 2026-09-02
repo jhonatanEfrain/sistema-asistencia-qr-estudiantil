@@ -104,7 +104,7 @@ export const AdminDashboard: React.FC = () => {
   const secundariaCount = estudiantes.filter(e => e.nivel === 'Secundaria').length;
 
   const dataNivel = [
-    { name: 'Primaria (1.°-6.°)', value: primariaCount, color: '#3b82f6' },
+    { name: 'Primaria (1.°-6.°)', value: primariaCount, color: '#b91c2e' },
     { name: 'Secundaria (1.°-5.°)', value: secundariaCount, color: '#10b981' }
   ];
 
@@ -174,27 +174,27 @@ export const AdminDashboard: React.FC = () => {
             <span className="px-3 py-1 rounded-full text-[10px] font-bold bg-white/15 text-white border border-white/20 backdrop-blur-sm">
               ● Sistema en Vivo
             </span>
-            <span className="text-xs text-blue-100/85 capitalize">
+            <span className="text-xs text-red-100/85 capitalize">
               Hoy: {new Date().toLocaleDateString('es-PE', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
             </span>
           </div>
           <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight mt-3">
             Panel de Control Institucional
           </h2>
-          <p className="text-xs sm:text-sm text-blue-100/90 max-w-lg leading-relaxed">
+          <p className="text-xs sm:text-sm text-red-100/90 max-w-lg leading-relaxed">
             Monitoreo en tiempo real de asistencia por código QR para Primaria y Secundaria
           </p>
           <div className="flex flex-wrap gap-3 pt-5">
             <button
               onClick={() => setIsScannerModalOpen(true)}
-              className="flex items-center gap-2.5 px-5 py-3 rounded-2xl bg-white hover:bg-blue-50 text-blue-700 font-extrabold text-sm shadow-xl shadow-blue-950/15 transition-all transform hover:-translate-y-0.5 active:scale-95"
+              className="flex items-center gap-2.5 px-5 py-3 rounded-2xl bg-white hover:bg-red-50 text-red-700 font-extrabold text-sm shadow-xl shadow-red-950/15 transition-all transform hover:-translate-y-0.5 active:scale-95"
             >
               <QrCode className="w-5 h-5" />
               <span>Abrir escáner QR</span>
             </button>
             <button
               onClick={() => setActiveTab('estudiantes')}
-              className="flex items-center gap-2 px-5 py-3 rounded-2xl bg-blue-950/20 hover:bg-blue-950/30 text-white border border-white/20 font-bold text-sm backdrop-blur-md transition-all"
+              className="flex items-center gap-2 px-5 py-3 rounded-2xl bg-red-950/20 hover:bg-red-950/30 text-white border border-white/20 font-bold text-sm backdrop-blur-md transition-all"
             >
               <Users className="w-4 h-4" />
               <span>Gestionar estudiantes</span>
@@ -206,9 +206,9 @@ export const AdminDashboard: React.FC = () => {
       {/* Main shortcuts inspired by the visual reference */}
       <div className="grid grid-cols-2 xl:grid-cols-4 gap-3 sm:gap-4">
         {[
-          { id: 'estudiantes', label: 'Estudiantes', detail: 'Matrícula y carnés QR', icon: Users, color: 'from-blue-600 to-indigo-500' },
+          { id: 'estudiantes', label: 'Estudiantes', detail: 'Matrícula y carnés QR', icon: Users, color: 'from-red-600 to-rose-500' },
           { id: 'docentes', label: 'Docentes', detail: 'Personal y asignaciones', icon: GraduationCap, color: 'from-violet-600 to-purple-500' },
-          { id: 'aulas', label: 'Aulas', detail: 'Grados y secciones', icon: Building2, color: 'from-cyan-600 to-blue-500' },
+          { id: 'aulas', label: 'Aulas', detail: 'Grados y secciones', icon: Building2, color: 'from-red-600 to-red-500' },
           { id: 'reportes', label: 'Reportes', detail: 'PDF, Excel y métricas', icon: FileSpreadsheet, color: 'from-orange-500 to-rose-500' }
         ].map(item => {
           const Icon = item.icon;
@@ -241,7 +241,7 @@ export const AdminDashboard: React.FC = () => {
       <div className="quick-scan-card p-4 sm:p-5 bg-white border rounded-3xl space-y-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Zap className="w-4 h-4 text-blue-600" />
+            <Zap className="w-4 h-4 text-red-600" />
             <h3 className="text-xs font-extrabold text-slate-800 uppercase tracking-wider">
               Escanear Asistencia Rápida Directamente en el Dashboard
             </h3>
@@ -259,12 +259,12 @@ export const AdminDashboard: React.FC = () => {
               value={quickQrInput}
               onChange={e => setQuickQrInput(e.target.value)}
               placeholder="Ingrese código QR o DNI de alumno (ej: EST-1001 o 72819301)..."
-              className="w-full bg-slate-50 border border-slate-200 text-slate-900 pl-9 pr-4 py-3 rounded-2xl text-xs focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 focus:outline-none"
+              className="w-full bg-slate-50 border border-slate-200 text-slate-900 pl-9 pr-4 py-3 rounded-2xl text-xs focus:ring-2 focus:ring-red-500/20 focus:border-red-500 focus:outline-none"
             />
           </div>
           <button
             type="submit"
-            className="px-5 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-2xl shadow-md shadow-blue-600/20 transition-all flex items-center justify-center gap-1.5"
+            className="px-5 py-3 bg-red-600 hover:bg-red-700 text-white font-bold text-xs rounded-2xl shadow-md shadow-red-600/20 transition-all flex items-center justify-center gap-1.5"
           >
             <Check className="w-4 h-4" />
             <span>Registrar Asistencia</span>
@@ -293,7 +293,7 @@ export const AdminDashboard: React.FC = () => {
         <div className="metric-card p-4 sm:p-5 bg-slate-900 border border-slate-800 rounded-2xl transition-all">
           <div className="flex items-center justify-between text-slate-400 mb-2">
             <span className="text-xs font-semibold">Total Alumnos</span>
-            <Users className="w-4 h-4 text-blue-400" />
+            <Users className="w-4 h-4 text-red-400" />
           </div>
           <p className="text-2xl sm:text-3xl font-extrabold text-white">{totalEstudiantes}</p>
           <p className="text-[11px] text-slate-400 mt-1">Primaria y Secundaria</p>
@@ -333,12 +333,12 @@ export const AdminDashboard: React.FC = () => {
         <div className="metric-card p-4 sm:p-5 bg-slate-900 border border-slate-800 rounded-2xl transition-all col-span-2 lg:col-span-1">
           <div className="flex items-center justify-between text-slate-400 mb-2">
             <span className="text-xs font-semibold">% Asistencia</span>
-            <TrendingUp className="w-4 h-4 text-indigo-400" />
+            <TrendingUp className="w-4 h-4 text-rose-400" />
           </div>
-          <p className="text-2xl sm:text-3xl font-extrabold text-indigo-300">{porcentajeAsistencia}%</p>
+          <p className="text-2xl sm:text-3xl font-extrabold text-rose-300">{porcentajeAsistencia}%</p>
           <div className="w-full bg-slate-800 h-1.5 rounded-full mt-2 overflow-hidden">
             <div
-              className="bg-indigo-500 h-full rounded-full transition-all duration-500"
+              className="bg-rose-500 h-full rounded-full transition-all duration-500"
               style={{ width: `${porcentajeAsistencia}%` }}
             />
           </div>
@@ -356,7 +356,7 @@ export const AdminDashboard: React.FC = () => {
             </div>
             <button
               onClick={() => setActiveTab('reportes')}
-              className="flex items-center gap-1 text-xs text-blue-400 hover:text-blue-300 font-semibold"
+              className="flex items-center gap-1 text-xs text-red-400 hover:text-red-300 font-semibold"
             >
               <span>Ver Reportes</span>
               <ArrowUpRight className="w-3.5 h-3.5" />
