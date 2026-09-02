@@ -100,6 +100,147 @@ async function ensureCommunicationSchema() {
   }
 }
 
+async function seedProductionDemoDataOnce() {
+  if (!pool) return;
+  const connection = await pool.getConnection();
+
+  try {
+    await connection.query(`
+      CREATE TABLE IF NOT EXISTS sistema_migraciones (
+        id VARCHAR(100) PRIMARY KEY,
+        aplicado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+    const [markerRows] = await connection.query<any[]>(
+      `SELECT id FROM sistema_migraciones WHERE id = 'demo_comunicacion_v1' LIMIT 1`
+    );
+    if (markerRows.length > 0) return;
+
+    await connection.beginTransaction();
+
+    const classrooms = [
+      ['AUL-DEMO-P1A', '1.°', 'D', 'Primaria', 'DEMO-DOC-01', 'Prof. Andrea Torres Demo', 25],
+      ['AUL-DEMO-S1A', '1.°', 'D', 'Secundaria', 'DEMO-DOC-02', 'Prof. Miguel Salazar Demo', 25],
+    ];
+    for (const classroom of classrooms) {
+      await connection.execute(`
+        INSERT INTO aulas (id, grado, seccion, nivel, tutor_docente_id, tutor_nombre, capacidad)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+        ON DUPLICATE KEY UPDATE tutor_docente_id = VALUES(tutor_docente_id), tutor_nombre = VALUES(tutor_nombre)
+      `, classroom);
+    }
+
+    const teachers = [
+      ['DEMO-DOC-01', '81000001', 'Andrea', 'Torres Demo', 'Educación Primaria', 'docente.demo1@colegio.edu.pe', '980000001', JSON.stringify(['AUL-DEMO-P1A'])],
+      ['DEMO-DOC-02', '81000002', 'Miguel', 'Salazar Demo', 'Comunicación', 'docente.demo2@colegio.edu.pe', '980000002', JSON.stringify(['AUL-DEMO-S1A'])],
+    ];
+    for (const teacher of teachers) {
+      await connection.execute(`
+        INSERT INTO docentes (id, dni, nombres, apellidos, especialidad, email, telefono, aulas_asignadas)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        ON DUPLICATE KEY UPDATE aulas_asignadas = VALUES(aulas_asignadas), email = VALUES(email)
+      `, teacher);
+    }
+
+    const students = [
+      ['DEMO-EST-01', 1, 'Quispe Demo', 'Luciana', '82000001', '1.°', 'D', 'Primaria', 'AUL-DEMO-P1A', 'Patricia Demo', '970000001', 'familia.demo1@colegio.edu.pe', 'DEMO-EST-01'],
+      ['DEMO-EST-02', 2, 'Campos Demo', 'Thiago', '82000002', '1.°', 'D', 'Primaria', 'AUL-DEMO-P1A', 'Roberto Demo', '970000002', 'familia.demo2@colegio.edu.pe', 'DEMO-EST-02'],
+      ['DEMO-EST-03', 1, 'Ramos Demo', 'Sofía', '82000003', '1.°', 'D', 'Secundaria', 'AUL-DEMO-S1A', 'Elena Demo', '970000003', 'familia.demo3@colegio.edu.pe', 'DEMO-EST-03'],
+    ];
+    for (const student of students) {
+      await connection.execute(`
+        INSERT INTO estudiantes (
+          id, numero_orden, apellidos, nombres, dni, grado, seccion, nivel, aula_id,
+          nombre_apoderado, telefono_apoderado, correo_apoderado, qr_code_data
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ON DUPLICATE KEY UPDATE aula_id = VALUES(aula_id), correo_apoderado = VALUES(correo_apoderado)
+      `, student);
+    }
+
+    const parents = students.map(student => [
+      `DEMO-PAD-${student[0]}`, student[4], student[0], student[9], student[10], student[11],
+    ]);
+    for (const parent of parents) {
+      await connection.execute(`
+        INSERT INTO padres (id, estudiante_dni, estudiante_id, nombre_padre, telefono, email)
+        VALUES (?, ?, ?, ?, ?, ?)
+        ON DUPLICATE KEY UPDATE nombre_padre = VALUES(nombre_padre), email = VALUES(email)
+      `, parent);
+    }
+
+    const users = [
+      ['DEMO-USR-DOC-01', 'Prof. Andrea Torres Demo', 'docente.demo1@colegio.edu.pe', 'DocenteDemo123', 'docente', '81000001', null, JSON.stringify(['AUL-DEMO-P1A'])],
+      ['DEMO-USR-DOC-02', 'Prof. Miguel Salazar Demo', 'docente.demo2@colegio.edu.pe', 'DocenteDemo123', 'docente', '81000002', null, JSON.stringify(['AUL-DEMO-S1A'])],
+      ['DEMO-USR-PAD-01', 'Patricia Demo (Apoderada de Luciana)', 'familia.demo1@colegio.edu.pe', '82000001', 'padre', '82000001', 'DEMO-EST-01', null],
+      ['DEMO-USR-PAD-02', 'Roberto Demo (Apoderado de Thiago)', 'familia.demo2@colegio.edu.pe', '82000002', 'padre', '82000002', 'DEMO-EST-02', null],
+      ['DEMO-USR-PAD-03', 'Elena Demo (Apoderada de Sofía)', 'familia.demo3@colegio.edu.pe', '82000003', 'padre', '82000003', 'DEMO-EST-03', null],
+    ];
+    for (const user of users) {
+      await connection.execute(`
+        INSERT INTO usuarios (id, nombre, email, password, rol, dni, estudiante_id, assigned_aulas)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        ON DUPLICATE KEY UPDATE password = VALUES(password), estudiante_id = VALUES(estudiante_id),
+          assigned_aulas = VALUES(assigned_aulas)
+      `, user);
+    }
+
+    const announcements = [
+      ['DEMO-COM-GENERAL', 'Comunicado general de demostración', 'Este aviso llega a todas las familias porque fue publicado por la administración.', '2026-09-02 08:00:00', 'Lic. Roberto Valdivia (Director)', 'USR-001', 'Administrador', 'colegio', null, 'Todo el colegio', 'Todos'],
+      ['DEMO-COM-AULA', 'Actividad del aula de demostración', 'Este aviso llega únicamente a las familias de Primaria 1.° “D”.', '2026-09-02 09:15:00', 'Prof. Andrea Torres Demo', 'DEMO-USR-DOC-01', 'Docente', 'aula', 'AUL-DEMO-P1A', 'Primaria 1.° “D”', 'Primaria'],
+    ];
+    for (const announcement of announcements) {
+      await connection.execute(`
+        INSERT INTO comunicados (
+          id, titulo, descripcion, fecha, autor, autor_id, autor_rol, alcance, aula_id, aula_destino, nivel_destino
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ON DUPLICATE KEY UPDATE descripcion = VALUES(descripcion)
+      `, announcement);
+    }
+
+    const notifications = [
+      ['DEMO-NOT-GEN-01', 'DEMO-EST-01', 'DEMO-PAD-DEMO-EST-01', 'DEMO-USR-PAD-01', 'DEMO-COM-GENERAL', 'Comunicado general de demostración', 'Este aviso llega a todas las familias porque fue publicado por la administración.', '2026-09-02 08:00:00'],
+      ['DEMO-NOT-GEN-02', 'DEMO-EST-02', 'DEMO-PAD-DEMO-EST-02', 'DEMO-USR-PAD-02', 'DEMO-COM-GENERAL', 'Comunicado general de demostración', 'Este aviso llega a todas las familias porque fue publicado por la administración.', '2026-09-02 08:00:00'],
+      ['DEMO-NOT-GEN-03', 'DEMO-EST-03', 'DEMO-PAD-DEMO-EST-03', 'DEMO-USR-PAD-03', 'DEMO-COM-GENERAL', 'Comunicado general de demostración', 'Este aviso llega a todas las familias porque fue publicado por la administración.', '2026-09-02 08:00:00'],
+      ['DEMO-NOT-AULA-01', 'DEMO-EST-01', 'DEMO-PAD-DEMO-EST-01', 'DEMO-USR-PAD-01', 'DEMO-COM-AULA', 'Actividad del aula de demostración', 'Este aviso llega únicamente a las familias de Primaria 1.° “D”.', '2026-09-02 09:15:00'],
+      ['DEMO-NOT-AULA-02', 'DEMO-EST-02', 'DEMO-PAD-DEMO-EST-02', 'DEMO-USR-PAD-02', 'DEMO-COM-AULA', 'Actividad del aula de demostración', 'Este aviso llega únicamente a las familias de Primaria 1.° “D”.', '2026-09-02 09:15:00'],
+    ];
+    for (const notification of notifications) {
+      await connection.execute(`
+        INSERT INTO notificaciones (
+          id, estudiante_id, padre_id, usuario_destino_id, comunicado_id,
+          titulo, mensaje, fecha_hora, leida, tipo, canal
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, FALSE, 'comunicado', 'App')
+        ON DUPLICATE KEY UPDATE usuario_destino_id = VALUES(usuario_destino_id), canal = 'App'
+      `, notification);
+    }
+
+    const messages = [
+      ['DEMO-MSG-01', 'DEMO-USR-DOC-01', 'DEMO-USR-PAD-01', 'DEMO-EST-01', 'DEMO-USR-DOC-01', 'docente', 'Buenos días. Luciana está participando muy bien en las actividades del aula.', '2026-09-02 10:20:00', false],
+      ['DEMO-MSG-02', 'DEMO-USR-DOC-01', 'DEMO-USR-PAD-01', 'DEMO-EST-01', 'DEMO-USR-PAD-01', 'padre', 'Muchas gracias, profesora. Seguiremos apoyándola desde casa.', '2026-09-02 10:28:00', true],
+    ];
+    for (const message of messages) {
+      await connection.execute(`
+        INSERT INTO mensajes_chat (
+          id, docente_usuario_id, padre_usuario_id, estudiante_id,
+          remitente_id, remitente_rol, contenido, fecha_hora, leido
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ON DUPLICATE KEY UPDATE contenido = VALUES(contenido)
+      `, message);
+    }
+
+    await connection.execute(
+      `INSERT INTO sistema_migraciones (id) VALUES ('demo_comunicacion_v1')`
+    );
+    await connection.commit();
+    console.log('✅ Datos de demostración de comunicación creados en MySQL.');
+  } catch (error) {
+    await connection.rollback();
+    throw error;
+  } finally {
+    connection.release();
+  }
+}
+
 // ==================== ENDPOINTS API ====================
 
 // Endpoint de verificación del estado de MySQL
@@ -797,8 +938,9 @@ app.get('/api/aulas', async (_req, res) => {
 async function startServer() {
   try {
     await ensureCommunicationSchema();
+    await seedProductionDemoDataOnce();
   } catch (error) {
-    console.warn('⚠️ No se pudo actualizar el esquema de comunicación.', error);
+    console.warn('⚠️ No se pudo preparar el módulo de comunicación.', error);
   }
   if (process.env.NODE_ENV !== 'production') {
     const vite = await createViteServer({

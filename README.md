@@ -31,8 +31,8 @@ Requisitos: Node.js y MySQL 8 o superior.
 ## Cuentas de demostración
 
 - Administrador: `admin@colegio.edu.pe` / `admin123`
-- Docente de 1.° A: `c.flores@colegio.edu.pe` / `docente123`
-- Apoderada de Valeria: `rruiz@gmail.com` / `73920412`
+- Docente de demostración: `docente.demo1@colegio.edu.pe` / `DocenteDemo123`
+- Apoderada de demostración: `familia.demo1@colegio.edu.pe` / `82000001`
 
 Los comunicados y mensajes se entregan únicamente dentro de la aplicación. El administrador publica para todo el colegio; los docentes publican solo para sus aulas asignadas y el chat privado se habilita únicamente entre el docente y el apoderado vinculados al mismo estudiante.
 

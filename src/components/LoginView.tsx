@@ -41,11 +41,11 @@ export const LoginView: React.FC = () => {
       setEmailOrDni('admin@colegio.edu.pe');
       setPassword('admin123');
     } else if (role === 'docente') {
-      setEmailOrDni('c.flores@colegio.edu.pe');
-      setPassword('docente123');
+      setEmailOrDni('docente.demo1@colegio.edu.pe');
+      setPassword('DocenteDemo123');
     } else {
-      setEmailOrDni('rruiz@gmail.com');
-      setPassword('73920412');
+      setEmailOrDni('familia.demo1@colegio.edu.pe');
+      setPassword('82000001');
     }
   };
 
