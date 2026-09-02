@@ -10,6 +10,8 @@ import {
   Users,
   Menu,
   X,
+  PanelLeftClose,
+  PanelLeftOpen,
   Volume2,
   VolumeX,
   LogOut,
@@ -81,7 +83,12 @@ export const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar, isSidebarOpen }
             title="Menú de navegación"
             id="btn-toggle-sidebar"
           >
-            {isSidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            <span className="hidden md:block">
+              {isSidebarOpen ? <PanelLeftClose className="w-5 h-5" /> : <PanelLeftOpen className="w-5 h-5" />}
+            </span>
+            <span className="md:hidden">
+              {isSidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </span>
           </button>
 
           <div className="flex items-center gap-2.5">

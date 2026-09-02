@@ -8,7 +8,7 @@
 }
 
 html {
-  background: #4059a8;
+  background: #f5f7fb;
 }
 
 body {
@@ -36,16 +36,14 @@ textarea {
 }
 
 .app-shell {
-  background:
-    radial-gradient(circle at 14% 12%, rgba(129, 155, 255, 0.32), transparent 28rem),
-    radial-gradient(circle at 88% 88%, rgba(29, 54, 131, 0.4), transparent 34rem),
-    linear-gradient(145deg, #4d67b5 0%, #334b98 52%, #294183 100%);
+  background: #f5f7fb;
   padding: 0;
 }
 
 .app-frame {
-  background: #f4f6fa;
-  box-shadow: 0 32px 80px rgba(15, 30, 80, 0.28);
+  width: 100%;
+  min-height: 100vh;
+  background: #f5f7fb;
 }
 
 .app-navbar {
@@ -54,15 +52,15 @@ textarea {
 }
 
 .app-sidebar {
-  background: linear-gradient(180deg, #3f59aa 0%, #334c99 58%, #294184 100%) !important;
+  background: linear-gradient(180deg, #173f7a 0%, #123568 58%, #0e2b59 100%) !important;
   border-right: 0 !important;
   box-shadow: inset -1px 0 rgba(255, 255, 255, 0.08);
 }
 
 .app-content {
   background:
-    radial-gradient(circle at 70% 0%, rgba(100, 130, 226, 0.08), transparent 24rem),
-    #f4f6fa;
+    radial-gradient(circle at 72% 0%, rgba(51, 104, 219, 0.07), transparent 26rem),
+    #f5f7fb;
 }
 
 .theme-dark .app-frame,
@@ -95,7 +93,7 @@ textarea {
 .dashboard-hero {
   background:
     radial-gradient(circle at 82% 18%, rgba(255, 255, 255, 0.18), transparent 13rem),
-    linear-gradient(120deg, #3f5fb8 0%, #526fd0 55%, #667fda 100%);
+    linear-gradient(120deg, #1f57bd 0%, #3269d2 55%, #4d7be0 100%);
   border-color: rgba(255, 255, 255, 0.2) !important;
   box-shadow: 0 20px 45px rgba(48, 73, 153, 0.2);
 }
@@ -113,7 +111,7 @@ textarea {
 .dashboard-hero-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, #3e5db4 0%, rgba(63, 94, 184, 0.96) 36%, rgba(63, 94, 184, 0.35) 68%, rgba(63, 94, 184, 0.06) 100%);
+  background: linear-gradient(90deg, #1f57bd 0%, rgba(31, 87, 189, 0.97) 38%, rgba(31, 87, 189, 0.4) 70%, rgba(31, 87, 189, 0.08) 100%);
 }
 
 .shortcut-card {
@@ -140,6 +138,27 @@ textarea {
   background-color: #ffffff !important;
   border-color: #e7eaf1 !important;
   box-shadow: 0 10px 30px rgba(42, 61, 110, 0.06);
+}
+
+.theme-light .app-sidebar .text-white,
+.theme-light .dashboard-hero .text-white,
+.theme-light .dashboard-hero button.text-white,
+.theme-light .shortcut-card.text-white,
+.theme-light .shortcut-card .text-white {
+  color: #ffffff !important;
+}
+
+.theme-light .dashboard-hero .text-blue-100\/85,
+.theme-light .dashboard-hero .text-blue-100\/90 {
+  color: rgba(239, 246, 255, 0.9) !important;
+}
+
+.theme-light .app-sidebar button:not(.bg-white) {
+  color: rgba(239, 246, 255, 0.82) !important;
+}
+
+.theme-light .app-sidebar button.bg-white {
+  color: #1d4ed8 !important;
 }
 
 .theme-light .app-content .rounded-2xl,
@@ -175,20 +194,6 @@ textarea {
 .theme-light .app-content textarea:focus {
   border-color: #5373d8 !important;
   box-shadow: 0 0 0 3px rgba(83, 115, 216, 0.13);
-}
-
-@media (min-width: 768px) {
-  .app-shell {
-    padding: 1.5rem;
-  }
-
-  .app-frame {
-    border-radius: 2rem;
-  }
-
-  .app-navbar {
-    border-radius: 2rem 2rem 0 0;
-  }
 }
 
 @media (max-width: 767px) {

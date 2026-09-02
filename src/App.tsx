@@ -84,7 +84,7 @@ const MainAppContent: React.FC = () => {
     <div className={`app-shell min-h-screen font-sans selection:bg-blue-600 selection:text-white transition-colors duration-200 ${
       theme === 'light' ? 'theme-light text-slate-900' : 'theme-dark text-slate-100'
     }`}>
-      <div className="app-frame min-h-screen md:min-h-[calc(100vh-3rem)] flex flex-col overflow-hidden">
+      <div className="app-frame min-h-screen flex flex-col overflow-hidden">
         <Navbar
           isOpen={isSidebarOpen}
           isSidebarOpen={isSidebarOpen}

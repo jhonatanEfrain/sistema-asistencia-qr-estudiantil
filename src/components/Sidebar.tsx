@@ -100,7 +100,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
             return (
               <React.Fragment key={item.id}>
                 {showCategoryHeader && (
-                  <p className="px-3 pt-4 pb-1.5 text-[9px] font-bold uppercase tracking-[0.18em] text-blue-200/45">
+                  <p className="px-3 pt-4 pb-1.5 text-[9px] font-bold uppercase tracking-[0.18em] text-blue-100/65">
                     {item.category}
                   </p>
                 )}
