@@ -279,7 +279,6 @@ export const SystemDocsView: React.FC = () => {
           <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800 font-mono text-xs text-slate-300">
             <pre>{`/
 ├── package.json                   # Dependencias npm (React 19, Tailwind, QR, PDF, Excel)
-├── metadata.json                  # Permisos de cámara e identidades
 ├── vite.config.ts                 # Configuración de Vite y alias
 ├── src/
 │   ├── main.tsx                   # Punto de entrada principal

@@ -136,7 +136,7 @@ CREATE TABLE IF NOT EXISTS historial_accesos (
 );
 
 -- ========================================================
--- DATOS INICIALES DE PRUEBA (SEED DATA)
+-- DATOS INICIALES MÍNIMOS
 -- ========================================================
 
 -- Insertar Configuración inicial
@@ -144,32 +144,7 @@ INSERT INTO configuracion (id, hora_ingreso_normal, hora_limite_tardanza, nombre
 VALUES (1, '08:00', '08:15', 'José Sabogal Diéguez (Josdic)', 'Av. Las Flores 456, Lima', '(01) 456-7890')
 ON DUPLICATE KEY UPDATE nombre_institucion = VALUES(nombre_institucion);
 
--- Insertar Aulas (Sin tutores preasignados ficticios; los docentes se asignan al registrarlos)
-INSERT INTO aulas (id, grado, seccion, nivel, tutor_docente_id, tutor_nombre, capacidad) VALUES
-('AUL-P1A', '1.°', 'A', 'Primaria', 'DOC-201', 'Prof. Carmen Rosa Flores', 30),
-('AUL-P2A', '2.°', 'A', 'Primaria', 'DOC-201', 'Prof. Carmen Rosa Flores', 30),
-('AUL-P3A', '3.°', 'A', 'Primaria', NULL, NULL, 30),
-('AUL-P4A', '4.°', 'A', 'Primaria', NULL, NULL, 30),
-('AUL-P5A', '5.°', 'A', 'Primaria', NULL, NULL, 30),
-('AUL-P6A', '6.°', 'A', 'Primaria', NULL, NULL, 30),
-('AUL-S1A', '1.°', 'A', 'Secundaria', NULL, NULL, 35),
-('AUL-S2A', '2.°', 'A', 'Secundaria', NULL, NULL, 35),
-('AUL-S3A', '3.°', 'A', 'Secundaria', NULL, NULL, 35),
-('AUL-S4A', '4.°', 'A', 'Secundaria', NULL, NULL, 35),
-('AUL-S5A', '5.°', 'A', 'Secundaria', NULL, NULL, 35)
-ON DUPLICATE KEY UPDATE 
-  tutor_docente_id = VALUES(tutor_docente_id),
-  tutor_nombre = VALUES(tutor_nombre),
-  capacidad = VALUES(capacidad);
-
--- Insertar Docentes (1 Docente de prueba)
-INSERT INTO docentes (id, dni, nombres, apellidos, especialidad, email, telefono, aulas_asignadas) VALUES
-('DOC-201', '41238901', 'Carmen Rosa', 'Flores Silva', 'Tutoría Primaria', 'c.flores@colegio.edu.pe', '+51 988112233', '["AUL-P1A", "AUL-P2A"]')
-ON DUPLICATE KEY UPDATE nombres = VALUES(nombres);
-
--- Insertar Usuarios por defecto para Inicios de Sesión (Admin y 1 Docente únicamente)
+-- Insertar únicamente la cuenta administradora inicial
 INSERT INTO usuarios (id, nombre, email, password, rol, dni, estudiante_id, assigned_aulas, avatar) VALUES
-('USR-001', 'Lic. Roberto Valdivia (Director)', 'admin@colegio.edu.pe', 'admin123', 'admin', '40998877', NULL, NULL, 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200'),
-('USR-002', 'Prof. Carmen Rosa Flores', 'c.flores@colegio.edu.pe', 'docente123', 'docente', '41238901', NULL, '["AUL-P1A", "AUL-P2A"]', 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=200')
+('USR-001', 'Lic. Roberto Valdivia (Director)', 'admin@colegio.edu.pe', 'admin123', 'admin', '40998877', NULL, NULL, 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200')
 ON DUPLICATE KEY UPDATE nombre = VALUES(nombre);
-
