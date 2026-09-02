@@ -72,21 +72,21 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
       {isOpen && (
         <div
           onClick={onClose}
-          className="fixed inset-x-0 top-[57px] bottom-0 bg-slate-950/60 backdrop-blur-xs z-40 md:hidden"
+          className="fixed inset-x-0 top-[68px] bottom-0 bg-slate-950/45 backdrop-blur-sm z-40 md:hidden"
         />
       )}
 
       {/* Sidebar Container */}
       <aside
-        className={`fixed md:relative top-[57px] md:top-0 bottom-0 left-0 z-40 bg-slate-900 border-r border-slate-800 flex flex-col transition-all duration-300 ease-in-out ${
+        className={`app-sidebar fixed md:relative top-[68px] md:top-0 bottom-0 left-0 z-40 bg-slate-900 flex flex-col transition-all duration-300 ease-in-out ${
           isOpen
             ? 'w-64 translate-x-0 opacity-100'
             : 'w-0 -translate-x-full opacity-0 pointer-events-none overflow-hidden'
         }`}
       >
-        <div className="p-4 border-b border-slate-800 hidden md:block">
-          <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-400">Panel de Control</p>
-          <p className="text-xs font-bold text-slate-200 capitalize">Rol: {currentRole}</p>
+        <div className="px-5 pt-6 pb-3 hidden md:block">
+          <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-blue-200/60">Espacio de trabajo</p>
+          <p className="text-sm font-bold text-white capitalize mt-1">Panel {currentRole}</p>
         </div>
 
         {/* Navigation Items */}
@@ -100,21 +100,21 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
             return (
               <React.Fragment key={item.id}>
                 {showCategoryHeader && (
-                  <p className="px-3 pt-3 pb-1 text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                  <p className="px-3 pt-4 pb-1.5 text-[9px] font-bold uppercase tracking-[0.18em] text-blue-200/45">
                     {item.category}
                   </p>
                 )}
                 <button
                   onClick={() => handleTabClick(item.id)}
-                  className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-medium transition-all ${
+                  className={`w-full flex items-center justify-between px-3.5 py-3 rounded-2xl text-xs font-medium transition-all duration-200 ${
                     isActive
-                      ? 'bg-blue-600 text-white font-semibold shadow-md shadow-blue-500/20'
-                      : 'text-slate-300 hover:bg-slate-800 hover:text-white'
+                      ? 'bg-white text-blue-700 font-bold shadow-lg shadow-blue-950/15'
+                      : 'text-blue-50/75 hover:bg-white/10 hover:text-white'
                   }`}
                   id={`nav-item-${item.id}`}
                 >
                   <div className="flex items-center gap-3">
-                    <Icon className={`w-4 h-4 ${isActive ? 'text-white' : 'text-slate-400'}`} />
+                    <Icon className={`w-4 h-4 ${isActive ? 'text-blue-600' : 'text-blue-200/70'}`} />
                     <span>{item.label}</span>
                   </div>
                   {isActive && <ChevronRight className="w-3.5 h-3.5" />}
@@ -125,7 +125,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
         </div>
 
         {/* Footer info inside sidebar */}
-        <div className="p-3 border-t border-slate-800 bg-slate-950/40 text-[11px] text-slate-400">
+        <div className="m-3 p-3.5 rounded-2xl bg-white/8 text-[10px] text-blue-100/70">
           <div className="flex items-center justify-between">
             <span>José Sabogal Diéguez (Josdic)</span>
             <span className="text-emerald-400 font-semibold">v1.0 QR</span>

@@ -81,25 +81,23 @@ const MainAppContent: React.FC = () => {
   };
 
   return (
-    <div className={`min-h-screen flex flex-col font-sans selection:bg-blue-600 selection:text-white transition-colors duration-200 ${
-      theme === 'light' ? 'theme-light bg-slate-100 text-slate-900' : 'bg-slate-950 text-slate-100'
+    <div className={`app-shell min-h-screen font-sans selection:bg-blue-600 selection:text-white transition-colors duration-200 ${
+      theme === 'light' ? 'theme-light text-slate-900' : 'theme-dark text-slate-100'
     }`}>
-      {/* Navbar */}
-      <Navbar
-        isOpen={isSidebarOpen}
-        isSidebarOpen={isSidebarOpen}
-        onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
-      />
+      <div className="app-frame min-h-screen md:min-h-[calc(100vh-3rem)] flex flex-col overflow-hidden">
+        <Navbar
+          isOpen={isSidebarOpen}
+          isSidebarOpen={isSidebarOpen}
+          onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
+        />
 
-      {/* Main Container */}
-      <div className="flex-1 flex overflow-hidden">
-        {/* Sidebar */}
-        <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
+        <div className="flex-1 flex overflow-hidden min-h-0">
+          <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
 
-        {/* Content Area */}
-        <main className="flex-1 overflow-y-auto p-3.5 sm:p-6 md:p-8 space-y-6">
-          {renderActiveView()}
-        </main>
+          <main className="app-content flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 space-y-6">
+            {renderActiveView()}
+          </main>
+        </div>
       </div>
 
       {/* Global QR Scanner Modal */}

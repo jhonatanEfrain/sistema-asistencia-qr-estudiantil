@@ -47,13 +47,13 @@ export const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar, isSidebarOpen }
   const unreadCount = notificaciones.filter(n => !n.leida).length;
 
   return (
-    <header className="sticky top-0 z-50 bg-slate-900 text-white border-b border-slate-800 shadow-sm">
-      <div className="px-3 py-2.5 sm:px-6 flex items-center justify-between">
+    <header className="app-navbar sticky top-0 z-50 bg-white text-slate-900 border-b border-slate-200/80">
+      <div className="px-4 py-3 sm:px-6 flex items-center justify-between min-h-[68px]">
         {/* Left: Mobile Drawer Button & Logo */}
         <div className="flex items-center gap-3">
           <button
             onClick={onToggleSidebar}
-            className="p-2 rounded-lg hover:bg-slate-800 text-slate-300 focus:outline-none"
+            className="p-2.5 rounded-xl hover:bg-blue-50 text-slate-500 focus:outline-none transition-colors"
             title="Menú de navegación"
             id="btn-toggle-sidebar"
           >
@@ -61,14 +61,14 @@ export const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar, isSidebarOpen }
           </button>
 
           <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center text-white font-bold shadow-md shadow-blue-500/20">
+            <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-blue-700 to-indigo-500 flex items-center justify-center text-white font-bold shadow-md shadow-blue-500/20">
               <QrCode className="w-5 h-5" />
             </div>
             <div>
-              <h1 className="text-sm sm:text-base font-bold tracking-tight text-white leading-tight">
+              <h1 className="text-sm sm:text-base font-extrabold tracking-tight text-slate-900 leading-tight">
                 {config.nombreInstitucion}
               </h1>
-              <p className="text-[11px] text-slate-400 font-medium hidden sm:block">
+              <p className="text-[11px] text-slate-500 font-medium hidden sm:block">
                 Sistema de Asistencia Estudiantil por QR
               </p>
             </div>

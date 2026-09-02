@@ -231,7 +231,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   }, [notificaciones]);
 
   const [theme, setTheme] = useState<'dark' | 'light'>(() => {
-    return (localStorage.getItem('asistencia_theme') as 'dark' | 'light') || 'dark';
+    return (localStorage.getItem('asistencia_theme') as 'dark' | 'light') || 'light';
   });
 
   const toggleTheme = () => {

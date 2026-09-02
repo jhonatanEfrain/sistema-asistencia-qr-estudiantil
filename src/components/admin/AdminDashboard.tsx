@@ -41,8 +41,8 @@ export const AdminDashboard: React.FC = () => {
     setActiveTab,
     registerAttendanceViaQR,
     latestScanAlert,
-    clearLatestScanAlert
-    ,config 
+    clearLatestScanAlert,
+    config
   } = useApp();
 
   const [quickQrInput, setQuickQrInput] = useState('');
@@ -159,27 +159,27 @@ export const AdminDashboard: React.FC = () => {
       )}
 
       {/* Header Banner */}
-      <div className="bg-gradient-to-r from-slate-900 via-blue-950 to-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl relative overflow-hidden flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+      <div className="dashboard-hero border rounded-3xl p-6 sm:p-7 relative overflow-hidden flex flex-col md:flex-row items-start md:items-center justify-between gap-5">
         <div className="space-y-1 z-10">
           <div className="flex items-center gap-2">
-            <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+            <span className="px-3 py-1 rounded-full text-[10px] font-bold bg-white/15 text-white border border-white/20 backdrop-blur-sm">
               ● Sistema en Vivo
             </span>
-            <span className="text-xs text-slate-400">
+            <span className="text-xs text-blue-100/85 capitalize">
               Hoy: {new Date().toLocaleDateString('es-PE', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
             </span>
           </div>
-          <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
+          <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight mt-3">
             Panel de Control Institucional
           </h2>
-          <p className="text-xs sm:text-sm text-slate-300">
+          <p className="text-xs sm:text-sm text-blue-100/85 max-w-2xl">
             Monitoreo en tiempo real de asistencia por código QR para Primaria y Secundaria
           </p>
         </div>
 
         <button
           onClick={() => setIsScannerModalOpen(true)}
-          className="z-10 flex items-center gap-2.5 px-5 py-3 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-white font-bold text-sm shadow-lg shadow-emerald-500/20 transition-all transform hover:scale-[1.02] active:scale-95"
+          className="z-10 flex items-center gap-2.5 px-5 py-3 rounded-2xl bg-white hover:bg-blue-50 text-blue-700 font-extrabold text-sm shadow-xl shadow-blue-950/15 transition-all transform hover:-translate-y-0.5 active:scale-95"
         >
           <QrCode className="w-5 h-5" />
           <span>Abrir Escáner QR Cámara</span>
@@ -187,11 +187,11 @@ export const AdminDashboard: React.FC = () => {
       </div>
 
       {/* Embedded Quick Scanner Bar on Dashboard */}
-      <div className="p-4 bg-slate-900/90 border border-emerald-500/30 rounded-2xl shadow-lg space-y-3">
+      <div className="quick-scan-card p-4 sm:p-5 bg-white border rounded-3xl space-y-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Zap className="w-4 h-4 text-emerald-400 animate-pulse" />
-            <h3 className="text-xs font-bold text-white uppercase tracking-wider">
+            <Zap className="w-4 h-4 text-blue-600" />
+            <h3 className="text-xs font-extrabold text-slate-800 uppercase tracking-wider">
               Escanear Asistencia Rápida Directamente en el Dashboard
             </h3>
           </div>
@@ -208,12 +208,12 @@ export const AdminDashboard: React.FC = () => {
               value={quickQrInput}
               onChange={e => setQuickQrInput(e.target.value)}
               placeholder="Ingrese código QR o DNI de alumno (ej: EST-1001 o 72819301)..."
-              className="w-full bg-slate-950 border border-slate-800 text-white pl-9 pr-4 py-2 rounded-xl text-xs focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+              className="w-full bg-slate-50 border border-slate-200 text-slate-900 pl-9 pr-4 py-3 rounded-2xl text-xs focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 focus:outline-none"
             />
           </div>
           <button
             type="submit"
-            className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl shadow-md transition-all flex items-center justify-center gap-1.5"
+            className="px-5 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-2xl shadow-md shadow-blue-600/20 transition-all flex items-center justify-center gap-1.5"
           >
             <Check className="w-4 h-4" />
             <span>Registrar Asistencia</span>
@@ -239,7 +239,7 @@ export const AdminDashboard: React.FC = () => {
       {/* KPI Stats Grid */}
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-3.5 sm:gap-4">
         {/* Total Estudiantes */}
-        <div className="p-4 sm:p-5 bg-slate-900 border border-slate-800 rounded-2xl shadow-sm hover:border-slate-700 transition-colors">
+        <div className="metric-card p-4 sm:p-5 bg-slate-900 border border-slate-800 rounded-2xl transition-all">
           <div className="flex items-center justify-between text-slate-400 mb-2">
             <span className="text-xs font-semibold">Total Alumnos</span>
             <Users className="w-4 h-4 text-blue-400" />
@@ -249,7 +249,7 @@ export const AdminDashboard: React.FC = () => {
         </div>
 
         {/* Presentes Hoy */}
-        <div className="p-4 sm:p-5 bg-slate-900 border border-slate-800 rounded-2xl shadow-sm hover:border-slate-700 transition-colors">
+        <div className="metric-card p-4 sm:p-5 bg-slate-900 border border-slate-800 rounded-2xl transition-all">
           <div className="flex items-center justify-between text-slate-400 mb-2">
             <span className="text-xs font-semibold">Presentes Hoy</span>
             <CheckCircle2 className="w-4 h-4 text-emerald-400" />
@@ -259,7 +259,7 @@ export const AdminDashboard: React.FC = () => {
         </div>
 
         {/* Tardanzas */}
-        <div className="p-4 sm:p-5 bg-slate-900 border border-slate-800 rounded-2xl shadow-sm hover:border-slate-700 transition-colors">
+        <div className="metric-card p-4 sm:p-5 bg-slate-900 border border-slate-800 rounded-2xl transition-all">
           <div className="flex items-center justify-between text-slate-400 mb-2">
             <span className="text-xs font-semibold">Tardanzas</span>
             <Clock className="w-4 h-4 text-amber-400" />
@@ -269,7 +269,7 @@ export const AdminDashboard: React.FC = () => {
         </div>
 
         {/* Inasistencias */}
-        <div className="p-4 sm:p-5 bg-slate-900 border border-slate-800 rounded-2xl shadow-sm hover:border-slate-700 transition-colors">
+        <div className="metric-card p-4 sm:p-5 bg-slate-900 border border-slate-800 rounded-2xl transition-all">
           <div className="flex items-center justify-between text-slate-400 mb-2">
             <span className="text-xs font-semibold">Inasistencias</span>
             <XCircle className="w-4 h-4 text-rose-400" />
@@ -279,7 +279,7 @@ export const AdminDashboard: React.FC = () => {
         </div>
 
         {/* % Asistencia */}
-        <div className="p-4 sm:p-5 bg-slate-900 border border-slate-800 rounded-2xl shadow-sm hover:border-slate-700 transition-colors col-span-2 lg:col-span-1">
+        <div className="metric-card p-4 sm:p-5 bg-slate-900 border border-slate-800 rounded-2xl transition-all col-span-2 lg:col-span-1">
           <div className="flex items-center justify-between text-slate-400 mb-2">
             <span className="text-xs font-semibold">% Asistencia</span>
             <TrendingUp className="w-4 h-4 text-indigo-400" />

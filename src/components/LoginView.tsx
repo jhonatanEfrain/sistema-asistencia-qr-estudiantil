@@ -44,18 +44,18 @@ export const LoginView: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex items-center justify-center p-4 relative overflow-hidden font-sans">
+    <div className="login-shell min-h-screen text-slate-900 flex items-center justify-center p-4 sm:p-8 relative overflow-hidden font-sans">
       {/* Background Decorative Blur Gradients */}
-      <div className="absolute top-1/4 -left-32 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-1/4 -right-32 w-96 h-96 bg-emerald-600/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-1/4 -left-32 w-96 h-96 bg-white/15 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-1/4 -right-32 w-96 h-96 bg-indigo-950/20 rounded-full blur-3xl pointer-events-none" />
 
-      <div className="w-full max-w-md bg-slate-900/90 border border-slate-800 rounded-3xl shadow-2xl p-6 sm:p-8 backdrop-blur-xl z-10 space-y-6">
+      <div className="login-card w-full max-w-md bg-white border border-white/70 rounded-[2rem] shadow-2xl p-6 sm:p-8 z-10 space-y-6">
         {/* Brand Header */}
         <div className="text-center space-y-2">
           <div className="inline-flex items-center justify-center p-3 rounded-2xl bg-blue-600/20 text-blue-400 border border-blue-500/20 mb-2">
             <QrCode className="w-8 h-8" />
           </div>
-          <h1 className="text-2xl font-black text-white tracking-tight">
+          <h1 className="text-2xl font-black text-slate-900 tracking-tight">
             José Sabogal Diéguez (Josdic)
           </h1>
           <p className="text-xs text-slate-400">
@@ -64,7 +64,7 @@ export const LoginView: React.FC = () => {
         </div>
 
         {/* Database Badge */}
-        <div className="flex items-center justify-between p-3 rounded-2xl bg-slate-950/70 border border-slate-800 text-xs">
+        <div className="flex items-center justify-between p-3 rounded-2xl bg-slate-50 border border-slate-200 text-xs">
           <span className="text-slate-400 flex items-center gap-2">
             <span className={`w-2 h-2 rounded-full ${isDbConnected ? 'bg-emerald-400 animate-pulse' : 'bg-amber-400'}`} />
             Base de Datos:
@@ -86,7 +86,7 @@ export const LoginView: React.FC = () => {
               className={`p-3 rounded-2xl border text-center transition-all flex flex-col items-center gap-1.5 ${
                 selectedRole === 'admin'
                   ? 'bg-blue-600 border-blue-500 text-white shadow-lg shadow-blue-600/30'
-                  : 'bg-slate-950/60 border-slate-800 text-slate-400 hover:border-slate-700 hover:text-white'
+                  : 'bg-slate-50 border-slate-200 text-slate-500 hover:border-blue-300 hover:text-blue-700'
               }`}
             >
               <ShieldCheck className="w-5 h-5" />
@@ -99,7 +99,7 @@ export const LoginView: React.FC = () => {
               className={`p-3 rounded-2xl border text-center transition-all flex flex-col items-center gap-1.5 ${
                 selectedRole === 'docente'
                   ? 'bg-blue-600 border-blue-500 text-white shadow-lg shadow-blue-600/30'
-                  : 'bg-slate-950/60 border-slate-800 text-slate-400 hover:border-slate-700 hover:text-white'
+                  : 'bg-slate-50 border-slate-200 text-slate-500 hover:border-blue-300 hover:text-blue-700'
               }`}
             >
               <GraduationCap className="w-5 h-5" />
@@ -112,7 +112,7 @@ export const LoginView: React.FC = () => {
               className={`p-3 rounded-2xl border text-center transition-all flex flex-col items-center gap-1.5 ${
                 selectedRole === 'padre'
                   ? 'bg-blue-600 border-blue-500 text-white shadow-lg shadow-blue-600/30'
-                  : 'bg-slate-950/60 border-slate-800 text-slate-400 hover:border-slate-700 hover:text-white'
+                  : 'bg-slate-50 border-slate-200 text-slate-500 hover:border-blue-300 hover:text-blue-700'
               }`}
             >
               <UserCheck className="w-5 h-5" />
@@ -130,7 +130,7 @@ export const LoginView: React.FC = () => {
           )}
 
           <div className="space-y-1.5">
-            <label className="text-xs font-medium text-slate-300">
+            <label className="text-xs font-semibold text-slate-700">
               {selectedRole === 'padre'
                 ? 'Correo de Apoderado, DNI o Nombre del Hijo(a)'
                 : 'Correo Electrónico, DNI o Usuario'}
@@ -147,7 +147,7 @@ export const LoginView: React.FC = () => {
                     ? 'ej: jalvarez@gmail.com, Mateo, o DNI 72819301'
                     : 'ej: admin@colegio.edu.pe o 40998877'
                 }
-                className="w-full pl-10 pr-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 transition-colors"
+                className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all"
               />
             </div>
             <p className="text-[10px] text-slate-400 font-medium">
@@ -160,7 +160,7 @@ export const LoginView: React.FC = () => {
           </div>
 
           <div className="space-y-1.5">
-            <label className="text-xs font-medium text-slate-300">Contraseña</label>
+            <label className="text-xs font-semibold text-slate-700">Contraseña</label>
             <div className="relative">
               <Lock className="w-4 h-4 text-slate-500 absolute left-3.5 top-3" />
               <input
@@ -169,7 +169,7 @@ export const LoginView: React.FC = () => {
                 value={password}
                 onChange={e => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full pl-10 pr-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 transition-colors"
+                className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all"
               />
             </div>
           </div>
@@ -177,7 +177,7 @@ export const LoginView: React.FC = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl text-xs transition-all shadow-lg shadow-blue-600/25 flex items-center justify-center gap-2 mt-2"
+            className="w-full py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-2xl text-xs transition-all shadow-lg shadow-blue-600/25 flex items-center justify-center gap-2 mt-2"
           >
             {loading ? (
               <span>Verificando...</span>
