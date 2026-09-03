@@ -147,7 +147,7 @@ DB_NAME=asistencia_qr_db`;
               <li>
                 <strong className="text-white">Crear la base de datos y tablas:</strong>
                 <p className="mt-1 ml-5 text-slate-400">
-                  Ejecuta el archivo <code className="bg-slate-800 text-emerald-400 px-1.5 py-0.5 rounded">database.sql</code> (incluido en la raíz del proyecto) en MySQL Workbench, phpMyAdmin o terminal.
+                  Ejecuta el archivo <code className="bg-slate-800 text-emerald-400 px-1.5 py-0.5 rounded">apps/backend/database/database.sql</code> en MySQL Workbench, phpMyAdmin o terminal.
                 </p>
               </li>
 
@@ -190,14 +190,10 @@ DB_NAME=asistencia_qr_db`;
 
         {/* Footer */}
         <div className="px-6 py-4 bg-slate-800/80 border-t border-slate-700/60 flex items-center justify-between">
-          <a
-            href="/database.sql"
-            download="database.sql"
-            className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-xl text-xs font-semibold flex items-center gap-2 border border-slate-700 transition-colors"
-          >
+          <div className="px-4 py-2 bg-slate-800 text-slate-200 rounded-xl text-xs font-semibold flex items-center gap-2 border border-slate-700">
             <FileCode className="w-4 h-4 text-emerald-400" />
-            Descargar database.sql
-          </a>
+            SQL local: apps/backend/database/database.sql
+          </div>
 
           <button
             onClick={onClose}

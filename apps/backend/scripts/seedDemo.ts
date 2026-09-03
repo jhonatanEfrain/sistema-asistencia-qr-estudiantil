@@ -1,7 +1,13 @@
 import dotenv from 'dotenv';
 import mysql from 'mysql2/promise';
+import path from 'path';
 
-dotenv.config();
+dotenv.config({
+  path: [
+    path.resolve(process.cwd(), '.env'),
+    path.resolve(process.cwd(), '../../.env'),
+  ],
+});
 
 const host = process.env.DB_HOST || 'localhost';
 const connection = await mysql.createConnection({

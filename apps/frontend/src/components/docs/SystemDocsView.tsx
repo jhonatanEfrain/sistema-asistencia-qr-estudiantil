@@ -284,9 +284,12 @@ export const SystemDocsView: React.FC = () => {
 
           <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800 font-mono text-xs text-slate-300">
             <pre>{`/
-├── package.json                   # Dependencias npm (React 19, Tailwind, QR, PDF, Excel)
-├── vite.config.ts                 # Configuración de Vite y alias
-├── src/
+├── package.json                   # Orquestación del monorepo con npm workspaces
+├── apps/
+│   ├── frontend/                  # Aplicación React 19 + Vite + Tailwind
+│   │   ├── package.json           # Dependencias y comandos del frontend
+│   │   ├── vite.config.ts         # Vite, alias y proxy hacia la API
+│   │   └── src/
 │   ├── main.tsx                   # Punto de entrada principal
 │   ├── App.tsx                    # Componente raíz con layout responsivo
 │   ├── index.css                  # Estilos globales Tailwind CSS v4
@@ -320,7 +323,14 @@ export const SystemDocsView: React.FC = () => {
 │       ├── reports/
 │       │   └── ReportsView.tsx    # Centro de exportación de informes PDF/Excel
 │       └── docs/
-│           └── SystemDocsView.tsx # Entregables técnicos y documentación`}</pre>
+│           └── SystemDocsView.tsx # Entregables técnicos y documentación
+│   └── backend/                   # API Express y persistencia MySQL
+│       ├── package.json           # Dependencias y comandos del backend
+│       ├── src/server.ts          # API REST y servidor de producción
+│       ├── scripts/seedDemo.ts    # Datos demostrativos
+│       └── database/database.sql  # Esquema MySQL
+├── .env.example                   # Variables compartidas
+└── README.md                      # Instalación, arquitectura y despliegue`}</pre>
           </div>
         </div>
       )}

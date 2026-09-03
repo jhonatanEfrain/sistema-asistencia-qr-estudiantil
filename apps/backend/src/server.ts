@@ -1,13 +1,18 @@
 import express from 'express';
 import path from 'path';
+import fs from 'fs';
 import dotenv from 'dotenv';
 import mysql from 'mysql2/promise';
-import { createServer as createViteServer } from 'vite';
 
-dotenv.config();
+dotenv.config({
+  path: [
+    path.resolve(process.cwd(), '.env'),
+    path.resolve(process.cwd(), '../../.env'),
+  ],
+});
 
 const app = express();
-const PORT = Number(process.env.PORT) || 3000;
+const PORT = Number(process.env.PORT || process.env.BACKEND_PORT) || 3001;
 
 app.use(express.json());
 
@@ -934,7 +939,8 @@ app.get('/api/aulas', async (_req, res) => {
   return res.json({ connected: true, data: rows });
 });
 
-// Configuración de Servidor de Desarrollo con Middleware de Vite
+// En producción, Express entrega el frontend ya compilado.
+// En desarrollo, Vite se ejecuta de forma independiente y redirige /api a este servidor.
 async function startServer() {
   try {
     await ensureCommunicationSchema();
@@ -942,22 +948,20 @@ async function startServer() {
   } catch (error) {
     console.warn('⚠️ No se pudo preparar el módulo de comunicación.', error);
   }
-  if (process.env.NODE_ENV !== 'production') {
-    const vite = await createViteServer({
-      server: { middlewareMode: true },
-      appType: 'spa',
-    });
-    app.use(vite.middlewares);
-  } else {
-    const distPath = path.join(process.cwd(), 'dist');
-    app.use(express.static(distPath));
+  const frontendDistPath = path.resolve(process.cwd(), '../frontend/dist');
+  const frontendIndexPath = path.join(frontendDistPath, 'index.html');
+
+  if (fs.existsSync(frontendIndexPath)) {
+    app.use(express.static(frontendDistPath));
     app.get('*', (_req, res) => {
-      res.sendFile(path.join(distPath, 'index.html'));
+      res.sendFile(frontendIndexPath);
     });
+  } else if (process.env.NODE_ENV === 'production') {
+    console.warn('⚠️ No se encontró el frontend compilado. Ejecuta npm run build desde la raíz.');
   }
 
   app.listen(PORT, '0.0.0.0', () => {
-    console.log(`🚀 Servidor ejecutándose en http://localhost:${PORT}`);
+    console.log(`🚀 API ejecutándose en http://localhost:${PORT}`);
     console.log(`📊 API Estado MySQL disponible en http://localhost:${PORT}/api/db-status`);
   });
 }
